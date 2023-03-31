@@ -1,0 +1,129 @@
+.body {
+	background-color: #000000;
+	font-family: 'Inter', sans-serif;
+	color: #ffffff;
+}
+
+.page {
+	width: calc(100% - 200px*2);
+	margin: 0 auto;
+}
+
+
+.header {
+	margin: 45px auto 38px;
+	display: flex;
+	border-bottom: 1px solid #545454;
+	justify-content: start;
+}
+
+.header__logo {
+	margin: 0 0 41px;
+}
+
+.profile {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	margin: 0 0 48px 0;
+}
+
+.profile__info {
+	display: flex;
+}
+
+.profile__avatar {
+	border-radius: 50%;
+	max-width: 120px;
+	max-height: 120px;
+	margin: 0 30px 0 0;
+}
+
+.profile__name {
+	font-size: 42px;
+	line-height: 1.14;
+	font-weight: 500;
+	margin: 24px 0 13px;
+	letter-spacing: 2px;
+	padding: 0;
+}
+
+.profile__subtitle {
+	font-size: 18px;
+	line-height: 1.02;
+	font-weight: 400;
+	margin: 0;
+	padding: 0;
+}
+
+.profile__edit-button {
+	max-width: 24px;
+	max-height: 24px;
+	margin: 38px 0 0 18px;
+}
+
+.profile__add-button {
+	width: 150px;
+	max-height: 50px;
+	border: 2px solid #ffffff;
+	box-sizing: border-box;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	margin: 35px 0 0 0;
+}
+
+.profile__add-button-plus {
+	max-width: 22px;
+	max-height: 22px;
+	align-self: center;
+}
+
+.element {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: 17px;
+}
+
+.element__group {
+	display: flex;
+	flex-direction: column;
+	border-radius: 5%;
+	max-width: 288px;
+	overflow: hidden;
+}
+
+.element__image {
+	max-width: 282px;
+}
+
+.element__title {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: #ffffff;
+	margin: 0;
+	height: 79px;
+}
+
+.element__title-text {
+	color: #000000;
+	margin: 25px 0 0 21px;
+	font-size: 24px;
+	font-weight: 900;
+	line-height: 1.2;
+		text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+
+.element__heart {
+	margin: 0 30px 0 0;
+}
+
+.footer {
+	margin: 67px 0 60px;
+	color: #545454;
+}
