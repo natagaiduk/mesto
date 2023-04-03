@@ -12,7 +12,7 @@ ____
 
 **Сайт**
 
-* [Ссылка на готовый сайт на GitHub Pages](...)
+* [Ссылка на готовый сайт на GitHub Pages](https://natagaiduk.github.io/mesto/)
 
 **Доработка**
 
