@@ -1,0 +1,7 @@
+.element__group {
+	display: flex;
+	flex-direction: column;
+	border-radius: 5%;
+	min-width: 288px;
+	overflow: hidden;
+}

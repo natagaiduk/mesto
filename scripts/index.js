@@ -19,9 +19,9 @@ inputName.value = profileName.textContent;
 inputSubtitle.value = profileSubtitle.textContent;
 
 
-let formElement = document.querySelector('.popup__save-button') 
+let formElement = document.querySelector('.popup__form') 
 function formSubmitHandler(evt) {
-  evt.preventDefault();
+  evt.preventDefault ();
   let inputName = document.querySelector('.popup__field-name');
   let inputSubtitle = document.querySelector('.popup__field-subtitle');
   let profileName = document.querySelector('.profile__name');

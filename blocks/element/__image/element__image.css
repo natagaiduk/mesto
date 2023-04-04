@@ -1,0 +1,5 @@
+.element__image {
+	min-width: 289px;
+	object-fit: fill;
+	object-position: 50% 50%;
+}
