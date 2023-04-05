@@ -2,8 +2,9 @@
 .popup__field-name {
 	border: none;
 	width: calc(100% - 36px*2);
-	min-height: 57px;
+	min-height: 40px;
 	border-bottom: 1px solid rgba(0, 0, 0, .2);
+	margin: 32px 0 0;
 }
 
 .popup__field-name:focus {
@@ -13,5 +14,7 @@
 @media screen and (max-width: 440px) {
 	.popup__field-name {
 		width: calc(100% - 22px*2);
+		font-size: 14px;
+		margin: 60px 0 0;
 	}
 }

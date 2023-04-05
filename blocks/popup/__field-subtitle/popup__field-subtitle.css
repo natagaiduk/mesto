@@ -2,8 +2,10 @@
 .popup__field-subtitle {
 	border: none;
 	width: calc(100% - 36px*2);
-	min-height: 57px;
+	min-height: 40px;
 	border-bottom: 1px solid rgba(0, 0, 0, .2);
+	font-size: 14px;
+	margin: 31px 0;
 }
 
 .popup__field-subtitle:focus {
@@ -13,5 +15,6 @@
 @media screen and (max-width: 440px) {
 	.popup__field-subtitle {
 		width: calc(100% - 22px*2);
+		margin: 17px 0;
 	}
 }

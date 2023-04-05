@@ -10,26 +10,10 @@
 
   <body class="body">
 
-        <section class="popup">
-          <div class="popup__container">
-            <img class="popup__close" src="images/Close Icon.png" alt="закрытие">
-            <h2 class="popup__edit">
-              Редактировать профиль
-            </h2>
-            <form class="popup__form">
-              <input class="popup__field-name" type="text" placeholder="Имя">
-              <input class="popup__field-subtitle" type="text" placeholder="О себе">
-              <button type="submit" class="popup__save-button">
-                Сохранить
-              </button>
-            </form>
-          </div>
-        </section>
-
     <div class="page">
 
       <header class="header">
-        <img class="header__logo" src="images/Vector.png" alt="логотип Место">
+        <img class="header__logo" src="images/Vector.svg" alt="логотип Место">
       </header>
 
       <main class="main">
@@ -38,10 +22,10 @@
             <img class="profile__avatar" src="images/face-kusto.jpg" alt="Жак Ив Кусто">
             <div class="profile__title">
             <div class="profile__edit">
-              <h2 class="profile__name">Жак-Ив Кусто</h2>
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
               <img class="profile__edit-button" src="images/Edit Button.svg">
             </div>
-            <h3 class="profile__subtitle">Исследователь океана</h3>
+            <h2 class="profile__subtitle">Исследователь океана</h2>
             </div>
           </div>
           <img class="profile__add-button" src="images/Vector (1).png" alt="кнопка добавления">
@@ -51,9 +35,9 @@
           <div class="element__group">
             <img class="element__image" src="images/stepi.jpg">
             <div class="element__title">
-              <h3 class="element__title-text">
+              <h2 class="element__title-text">
                 Бугалыш
-              </h3>
+              </h2>
               <img class="element__heart" src="images/heart.svg">
               <img class="element__heart element__heart_active" src="images/Active.png">
             </div>
@@ -61,9 +45,9 @@
           <div class="element__group">
             <img class="element__image" src="images/elbrus.png">
             <div class="element__title">
-              <h3 class="element__title-text">
+              <h2 class="element__title-text">
                 Гора Эльбрус
-              </h3>
+              </h2>
               <img class="element__heart" src="images/heart.svg">
               <img class="element__heart element__heart_active" src="images/Active.png">
             </div>
@@ -71,9 +55,9 @@
           <div class="element__group">
             <img class="element__image" src="images/dombai.png">
             <div class="element__title">
-              <h3 class="element__title-text">
+              <h2 class="element__title-text">
                 Домбай
-              </h3>
+              </h2>
               <img class="element__heart" src="images/heart.svg">
               <img class="element__heart element__heart_active" src="images/Active.png">
             </div>
@@ -81,9 +65,9 @@
           <div class="element__group">
             <img class="element__image" src="images/sever.jpg">
             <div class="element__title">
-              <h3 class="element__title-text">
+              <h2 class="element__title-text">
                 Северодвинск
-              </h3>
+              </h2>
               <img class="element__heart" src="images/heart.svg">
               <img class="element__heart element__heart_active" src="images/Active.png">
             </div>
@@ -91,9 +75,9 @@
           <div class="element__group">
             <img class="element__image" src="images/oymakon.jpg">
             <div class="element__title">
-              <h3 class="element__title-text">
+              <h2 class="element__title-text">
                 Оймякон
-              </h3>
+              </h2>
               <img class="element__heart" src="images/heart.svg">
               <img class="element__heart element__heart_active" src="images/Active.png">
             </div>
@@ -101,9 +85,9 @@
           <div class="element__group">
             <img class="element__image" src="images/karach.jpg">
             <div class="element__title">
-              <h3 class="element__title-text">
+              <h2 class="element__title-text">
                 Карачаево-Черкесск
-              </h3>
+              </h2>
               <img class="element__heart" src="images/heart.svg">
               <img class="element__heart element__heart_active" src="images/Active.png">
             </div>
@@ -115,6 +99,24 @@
           © 2020 Mesto Russia
       </footer>
 
+        <section class="popup">
+          <div class="popup__container">
+            <button class="popup__close">
+              
+            </button>
+            
+            <h2 class="popup__edit">
+              Редактировать профиль
+            </h2>
+            <form class="popup__form" name="submit">
+              <input class="popup__field-name popup__field-name_key_value" name="name" type="text" placeholder="Имя">
+              <input class="popup__field-subtitle popup__field-subtitle_key_value" name="subtitle" type="text" placeholder="О себе">
+              <button type="submit" class="popup__save-button">
+                Сохранить
+              </button>
+            </form>
+          </div>
+        </section>
 
     </div>
     <script src="scripts/index.js"></script>

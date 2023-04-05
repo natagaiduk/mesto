@@ -1,3 +1,12 @@
 .profile__edit {
 	display: flex;
 }
+
+@media screen and (max-width: 767px) {
+	.profile__edit {
+		flex-direction: row;
+		justify-content: space-between;
+		width: 218px;
+		margin: 0 0 0 20px;
+}
+}
