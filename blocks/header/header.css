@@ -3,6 +3,7 @@
 	margin: 45px auto 38px;
 	display: flex;
 	border-bottom: 1px solid #545454;
+	opacity: .7;
 	justify-content: start;
 }
 

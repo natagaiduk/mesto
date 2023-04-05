@@ -11,6 +11,7 @@
 @media screen and (max-width: 440px) {
 	.popup__edit {
 		font-size: 18px;
+		line-height: 1.22;
 		margin: 28px 0 0 26px;
 	}
 }

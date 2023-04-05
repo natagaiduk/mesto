@@ -6,6 +6,7 @@
 	margin: 0;
 	color: #ffffff;
 	font-size: 18px;
+	line-height: 1.22;
 	box-shadow: none;
 	border: none;
 	border-radius: 2px;
@@ -21,5 +22,6 @@
 		width: calc(100% - 22px*2);
 		margin-top: 20px;
 		font-size: 14px;
+		line-height: 1.2;
 	}
 }

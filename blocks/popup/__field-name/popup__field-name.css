@@ -3,6 +3,8 @@
 	border: none;
 	width: calc(100% - 36px*2);
 	min-height: 40px;
+	font-size: 14px;
+	line-height: 1.2;
 	border-bottom: 1px solid rgba(0, 0, 0, .2);
 	margin: 32px 0 0;
 }
@@ -14,7 +16,6 @@
 @media screen and (max-width: 440px) {
 	.popup__field-name {
 		width: calc(100% - 22px*2);
-		font-size: 14px;
 		margin: 60px 0 0;
 	}
 }
