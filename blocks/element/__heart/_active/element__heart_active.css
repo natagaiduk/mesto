@@ -1,13 +1,7 @@
 
 .element__heart_active {
-	max-width: 22px;
-	max-height: 19px;
-	margin: 30px 30px 0 0;
+
 }
 
-.element__heart:active {
-	display: block;
-	visibility: visible;
-	background-image: url(../../../../images/Active.svg);
-}
+
 

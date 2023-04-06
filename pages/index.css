@@ -1,14 +1,13 @@
 
 @import url(../vendor/normalize.css);
-@import url(../vendor/fonts/fonts.css);
+@import url(../vendor/fonts.css);
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/__close/popup__close.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__edit/popup__edit.css);
 @import url(../blocks/popup/__form/popup__form.css);
-@import url(../blocks/popup/__field-name/popup__field-name.css);
-@import url(../blocks/popup/__field-subtitle/popup__field-subtitle.css);
+@import url(../blocks/popup/__field/popup__field.css);
 @import url(../blocks/popup/__save-button/popup__save-button.css);
 @import url(../blocks/page/page.css);
 @import url(../blocks/body/body.css);

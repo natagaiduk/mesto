@@ -2,8 +2,8 @@ const editButton = document.querySelector('.profile__edit-button');
 const popup = document.querySelector('.popup');
 let profileName = document.querySelector('.profile__name');
 let profileSubtitle = document.querySelector('.profile__subtitle');
-let inputName = document.querySelector('.popup__field-name');
-let inputSubtitle = document.querySelector('.popup__field-subtitle');
+let inputName = document.querySelector('.popup__field_key_name');
+let inputSubtitle = document.querySelector('.popup__field_key_subtitle');
 
 
 function openPopup() {

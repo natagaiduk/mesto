@@ -1,10 +1,20 @@
 .element__heart {
 	all: unset;
-	margin: 10px 30px 0 0;
+	max-width: 22px;
+	max-height: 19px;
+	margin: 30px 30px 0 0;
 	cursor: pointer;
 }
 
 .element__heart:hover {
 	opacity: .5;
 	transition: ease .3s;
+}
+
+.element__heart:active {
+	background-image: url(../../../images/Active.svg);
+	background-repeat: no-repeat;
+	width: 22px;
+	height: 19px;
+	margin: 30px 30px 20px 0;
 }
