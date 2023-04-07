@@ -3,10 +3,9 @@
 	width: 22px;
 	height: 22px;
 	align-self: center;
-	padding: 14px 64px;
+	padding: 12px 62px;
 	border: 2px solid #ffffff;
 	border-radius: 2px;
-	margin: 5px 0 0 0;
 	cursor: pointer;
 	background-image: url('../../../images/Add.svg');
 	background-repeat: no-repeat;

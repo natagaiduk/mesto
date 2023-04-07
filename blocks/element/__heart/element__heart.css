@@ -2,7 +2,7 @@
 	all: unset;
 	max-width: 22px;
 	max-height: 19px;
-	margin: 30px 30px 0 0;
+	margin: 26px 20px 0 0;
 	cursor: pointer;
 }
 
@@ -16,5 +16,5 @@
 	background-repeat: no-repeat;
 	width: 22px;
 	height: 19px;
-	margin: 30px 30px 20px 0;
+	margin: 26px 20px 20px 0;
 }
