@@ -8,6 +8,10 @@
 	border-radius: 2px;
 	margin: 5px 0 0 0;
 	cursor: pointer;
+	background-image: url('../../../images/Add.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 22px;
 }
 
 .profile__add-button:hover {
@@ -21,5 +25,6 @@
 		margin: 38px 0 0 0;
 		width: 16px;
 		height: 16px;
+		background-size: 16px;
 	}
 }
