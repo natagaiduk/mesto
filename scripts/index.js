@@ -64,46 +64,44 @@ formElement.addEventListener('submit', formSubmitHandler);
 
 
 const addButton = document.querySelector('.profile__add-button');
-const popupPlace = document.querySelector('.popup-place');
-let imageLink = document.querySelector('.element__image'); 
-let imageTitle = document.querySelector('.element__title-text');
-let inputTitle = document.querySelector('.popup-place__field_key_title');
-let inputLink = document.querySelector('.popup-place__field_key_image');
+const popupPlace = document.querySelector('.popup_type_place');
+const imageLink = document.querySelector('.element__image'); 
+const imageTitle = document.querySelector('.element__title-text');
+const inputTitle = document.querySelector('.popup__field_key_title');
+const inputLink = document.querySelector('.popup__field_key_image');
 
 
 function openPopupPlace() {
-  popupPlace.classList.add('popup-place_opened');
+  popupPlace.classList.add('popup_opened');
 };
 
 addButton.addEventListener('click', openPopupPlace);
 
-const closePlaceButton = document.querySelector('.popup-place__close');
+const closePlaceButton = document.querySelector('.popup__close');
 function closePopupPlace() {
-  popupPlace.classList.remove('popup-place_opened');
+  popupPlace.classList.remove('popup_opened');
 }
 
 closePlaceButton.addEventListener('click', closePopupPlace);
 
 
 function formSubmitPlaceHandler(evt) {
-  evt.preventDefault ();
-  imageTitle.textContent = inputTitle.value;
-  imageTitle.alt = inputTitle.value;
-  imageLink.src = inputLink.value;
+  evt.preventDefault();
+const nameImageText = inputTitle.value;
+const linkText = inputLink.value;
 
-  let newPlaceObject = {
-    name: imageTitle.textContent,
-    link: imageLink.src
-  };
-  initialCards.push(newPlaceObject);
-  console.log(initialCards);
+const arrayElement = {
+  name: nameImageText,
+  link: linkText
+}
 
-  createCard(cardsData);
+const cardsElement = createCard(arrayElement);
+  cardsGridContainer.prepend(cardsElement);
 
   closePopupPlace();
 }
 
-let formPlace = document.querySelector('.popup-place__form')
+let formPlace = document.querySelector('.popup__form')
 
 formPlace.addEventListener('submit', formSubmitPlaceHandler);
 
@@ -113,12 +111,16 @@ formPlace.addEventListener('submit', formSubmitPlaceHandler);
 const cardsTemplate = document.getElementById('cards-template');
 const cardsGridContainer = document.querySelector('.element');
 
+
 function createCard (cardsData) {
   const clonedCard = cardsTemplate.content.querySelector('.element__group').cloneNode(true);
   const cardImage = clonedCard.querySelector('.element__image');
   const cardTitle = clonedCard.querySelector('.element__title-text');
   const cardDeleteButton = clonedCard.querySelector('.element__trash');
   const cardLikeButton = clonedCard.querySelector('.element__heart');
+  const zoomImage = document.querySelector('.popup_type_image');
+  const zoomImageSrc = document.querySelector('.popup__card');
+  const zoomImageTitle = document.querySelector('.popup__title');
 
   cardTitle.textContent = cardsData.name;
   cardImage.src = cardsData.link;
@@ -129,16 +131,38 @@ function createCard (cardsData) {
   }
 
   function handleLikeCard(evt) {
-    cardLikeButton.classList.toggle('element__heart_active')
+    cardLikeButton.classList.toggle('element__heart_active');
   }
 
   cardDeleteButton.addEventListener('click', handleDeleteCard);
-  cardLikeButton.addEventListener('click', handleLikeCard); 
+  cardLikeButton.addEventListener('click', handleLikeCard);
+
+
+  const zoomCard = function () {
+  const imageElementLink = cardImage.src;
+  const imageElementAlt = cardImage.alt;
+  zoomImageSrc.src = imageElementLink;
+  zoomImageSrc.alt = imageElementAlt;
+  zoomImageTitle.textContent = imageElementAlt;
+  zoomImage.classList.add('popup_opened');
+  }
+
+  function zoomClose() {
+    zoomImage.classList.remove('popup_opened');
+  }
+
+  cardImage.addEventListener('click', zoomCard);
+
+  const closeZoomImage = document.querySelector('.popup__close');
+  closeZoomImage.addEventListener('click', zoomClose);
 
   return clonedCard;
-} 
+
+}
 
 initialCards.forEach((cardsData) => {
   const cardsElement = createCard(cardsData);
   cardsGridContainer.prepend(cardsElement);
 });
+
+

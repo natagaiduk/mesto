@@ -60,20 +60,31 @@
           </div>
         </section>
 
-        <section class="popup-place">
-          <div class="popup-place__container">
-            <button class="popup-place__close" type="button">
+        <section class="popup popup_type_place">
+          <div class="popup__container">
+            <button class="popup__close" type="button">
             </button>
-            <h2 class="popup-place__edit">
+            <h2 class="popup__edit">
               Новое место
             </h2>
-            <form class="popup-place__form" name="submit">
-              <input class="popup-place__field popup-place__field_key_title" name="name" type="text" placeholder="Название">
-              <input class="popup-place__field popup-place__field_key_image" name="image" type="text" placeholder="Ссылка на картинку">
-              <button type="submit" class="popup-place__save-button">
+            <form class="popup__form" name="submit">
+              <input class="popup__field popup__field_key_title" name="name" type="text" placeholder="Название">
+              <input class="popup__field popup__field_key_image" name="image" type="text" placeholder="Ссылка на картинку">
+              <button type="submit" class="popup__save-button">
                 Создать
               </button>
             </form>
+          </div>
+        </section>
+
+        <section class="popup popup_type_image">
+          <div class="popup__container popup__container_type_image">
+            <img class="popup__card">
+            <p class="popup__title">
+              
+            </p>
+            <button class="popup__close" type="button">
+            </button>
           </div>
         </section>
 
@@ -81,7 +92,9 @@
 
     <template id="cards-template">
       <article class="element__group">
+
         <img class="element__image">
+
         <button class="element__trash" type="button">
           <img src="images/Trash.svg" alt="кнопка удалить">
         </button>
