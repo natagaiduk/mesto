@@ -1,6 +1,7 @@
 .popup__container {
 	min-width: 430px;
 	min-height: 330px;
+	object-fit: cover;
 	background-color: #ffffff;
 	border-radius: 10px;
 	position: relative;
@@ -9,8 +10,7 @@
 
 @media screen and (max-width: 767px) {
 	.popup__container {
-		width: calc(100% - 19px*2);
-		max-width: 430px;
+		min-width: calc(100% - 19px*2);
 	}
 }
 
@@ -20,6 +20,3 @@
 	}
 }
 
-.popup__container_type_image {
-	background-color: transparent;
-}
