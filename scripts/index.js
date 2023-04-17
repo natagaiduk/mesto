@@ -77,7 +77,7 @@ function openPopupPlace() {
 
 addButton.addEventListener('click', openPopupPlace);
 
-const closePlaceButton = document.querySelector('.popup__close');
+const closePlaceButton = document.querySelector('.popup__close_type_place');
 function closePopupPlace() {
   popupPlace.classList.remove('popup_opened');
 }
@@ -101,7 +101,7 @@ const cardsElement = createCard(arrayElement);
   closePopupPlace();
 }
 
-let formPlace = document.querySelector('.popup__form')
+let formPlace = document.querySelector('.popup__form_type_place');
 
 formPlace.addEventListener('submit', formSubmitPlaceHandler);
 
@@ -153,7 +153,7 @@ function createCard (cardsData) {
 
   cardImage.addEventListener('click', zoomCard);
 
-  const closeZoomImage = document.querySelector('.popup__close');
+  const closeZoomImage = document.querySelector('.popup__close_type_image');
   closeZoomImage.addEventListener('click', zoomClose);
 
   return clonedCard;
