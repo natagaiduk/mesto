@@ -4,6 +4,8 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	max-width: 75vw;
-	max-height: 75vh;
+	max-width: max-content;
+	max-height: inherit;
+	min-height: max-content;
+	min-width: inherit;
 }
