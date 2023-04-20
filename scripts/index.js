@@ -26,40 +26,51 @@ const initialCards = [
   }
 ]; 
 
+
+
 const editButton = document.querySelector('.profile__edit-button');
-const popup = document.querySelector('.popup');
-let profileName = document.querySelector('.profile__name');
-let profileSubtitle = document.querySelector('.profile__subtitle');
-let inputName = document.querySelector('.popup__field_key_name');
-let inputSubtitle = document.querySelector('.popup__field_key_subtitle');
+const popupEdit = document.querySelector('.popup_type_name');
+const closeButton = document.querySelector('.popup__close_type_name');
+const profileName = document.querySelector('.profile__name');
+const profileSubtitle = document.querySelector('.profile__subtitle');
+const inputName = document.querySelector('.popup__field_key_name');
+const inputSubtitle = document.querySelector('.popup__field_key_subtitle');
+const formElement = document.querySelector('.popup__form_type_name')
 
 
-function openPopup() {
-  popup.classList.add('popup_opened');
-  inputName.value = profileName.textContent;
-  inputSubtitle.value = profileSubtitle.textContent;
-};
-
-editButton.addEventListener('click', openPopup);
-
-const closeButton = document.querySelector('.popup__close');
-function closePopup() {
-  popup.classList.remove('popup_opened');
+function openPopup(modalWindow) {
+  modalWindow.classList.add('popup_opened');
 }
 
-closeButton.addEventListener('click', closePopup);
+function closePopup(modalWindow) {
+  modalWindow.classList.remove('popup_opened');
+};
 
+function openPopupEdit() {
+  openPopup(popupEdit);
+  inputName.value = profileName.textContent;
+  inputSubtitle.value = profileSubtitle.textContent;
+}
 
-function formSubmitHandler(evt) {
+function closePopupEdit() {
+  closePopup(popupEdit);
+}
+
+//функция редактирования имени и подписи
+function formSubmitEditHandler(evt) {
   evt.preventDefault ();
   profileName.textContent = inputName.value;
   profileSubtitle.textContent = inputSubtitle.value;
-  closePopup();
+  closePopupEdit();
 }
 
-let formElement = document.querySelector('.popup__form')
 
-formElement.addEventListener('submit', formSubmitHandler);
+editButton.addEventListener('click', openPopupEdit);
+
+closeButton.addEventListener('click', closePopupEdit);
+
+//обработчик подтверждения редактирования имени и подписи
+formElement.addEventListener('submit', formSubmitEditHandler);
 
 
 
@@ -69,18 +80,20 @@ const imageLink = document.querySelector('.element__image');
 const imageTitle = document.querySelector('.element__title-text');
 const inputTitle = document.querySelector('.popup__field_key_title');
 const inputLink = document.querySelector('.popup__field_key_image');
+const closePlaceButton = document.querySelector('.popup__close_type_place');
+const formPlace = document.querySelector('.popup__form_type_place');
 
 
 function openPopupPlace() {
-  popupPlace.classList.add('popup_opened');
+  openPopup(popupPlace);
 };
 
-addButton.addEventListener('click', openPopupPlace);
-
-const closePlaceButton = document.querySelector('.popup__close_type_place');
 function closePopupPlace() {
-  popupPlace.classList.remove('popup_opened');
+  closePopup(popupPlace);
 }
+
+
+addButton.addEventListener('click', openPopupPlace);
 
 closePlaceButton.addEventListener('click', closePopupPlace);
 
@@ -90,22 +103,17 @@ function formSubmitPlaceHandler(evt) {
 const nameImageText = inputTitle.value;
 const linkText = inputLink.value;
 
-const arrayElement = {
+const cardInfo = {
   name: nameImageText,
   link: linkText
 }
 
-const cardsElement = createCard(arrayElement);
+const cardsElement = createCard(cardInfo);
   cardsGridContainer.prepend(cardsElement);
-
   closePopupPlace();
 }
 
-let formPlace = document.querySelector('.popup__form_type_place');
-
 formPlace.addEventListener('submit', formSubmitPlaceHandler);
-
-
 
 
 const cardsTemplate = document.getElementById('cards-template');
@@ -148,7 +156,7 @@ function createCard (cardsData) {
   }
 
   function zoomClose() {
-    zoomImage.classList.remove('popup_opened');
+    closePopup(zoomImage);
   }
 
   cardImage.addEventListener('click', zoomCard);
