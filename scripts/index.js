@@ -1,30 +1,4 @@
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-]; 
+import {initialCards} from './constants.js'
 
 
 
@@ -56,7 +30,6 @@ function closePopupEdit() {
   closePopup(popupEdit);
 }
 
-//функция редактирования имени и подписи
 function formSubmitEditHandler(evt) {
   evt.preventDefault ();
   profileName.textContent = inputName.value;
@@ -69,7 +42,6 @@ editButton.addEventListener('click', openPopupEdit);
 
 closeButton.addEventListener('click', closePopupEdit);
 
-//обработчик подтверждения редактирования имени и подписи
 formElement.addEventListener('submit', formSubmitEditHandler);
 
 
@@ -120,15 +92,33 @@ const cardsTemplate = document.getElementById('cards-template');
 const cardsGridContainer = document.querySelector('.element');
 
 
+const zoomImage = document.querySelector('.popup_type_image');
+const zoomImageSrc = document.querySelector('.popup__card');
+const zoomImageTitle = document.querySelector('.popup__title');
+const closeZoomImage = document.querySelector('.popup__close_type_image');
+
+function zoomCard(cardImage) {
+  const imageElementLink = cardImage.src;
+  const imageElementAlt = cardImage.alt;
+  zoomImageSrc.src = imageElementLink;
+  zoomImageSrc.alt = imageElementAlt;
+  zoomImageTitle.textContent = imageElementAlt;
+  openPopup(zoomImage);
+  }
+
+
+  function zoomClose() {
+    closePopup(zoomImage);
+  }
+
+
 function createCard (cardsData) {
   const clonedCard = cardsTemplate.content.querySelector('.element__group').cloneNode(true);
   const cardImage = clonedCard.querySelector('.element__image');
   const cardTitle = clonedCard.querySelector('.element__title-text');
   const cardDeleteButton = clonedCard.querySelector('.element__trash');
   const cardLikeButton = clonedCard.querySelector('.element__heart');
-  const zoomImage = document.querySelector('.popup_type_image');
-  const zoomImageSrc = document.querySelector('.popup__card');
-  const zoomImageTitle = document.querySelector('.popup__title');
+
 
   cardTitle.textContent = cardsData.name;
   cardImage.src = cardsData.link;
@@ -146,31 +136,19 @@ function createCard (cardsData) {
   cardLikeButton.addEventListener('click', handleLikeCard);
 
 
-  const zoomCard = function () {
-  const imageElementLink = cardImage.src;
-  const imageElementAlt = cardImage.alt;
-  zoomImageSrc.src = imageElementLink;
-  zoomImageSrc.alt = imageElementAlt;
-  zoomImageTitle.textContent = imageElementAlt;
-  zoomImage.classList.add('popup_opened');
-  }
+  cardImage.addEventListener('click', function() {
+    zoomCard(cardImage)
+  });
 
-  function zoomClose() {
-    closePopup(zoomImage);
-  }
 
-  cardImage.addEventListener('click', zoomCard);
-
-  const closeZoomImage = document.querySelector('.popup__close_type_image');
   closeZoomImage.addEventListener('click', zoomClose);
 
   return clonedCard;
 
-}
+};
+
 
 initialCards.forEach((cardsData) => {
   const cardsElement = createCard(cardsData);
   cardsGridContainer.prepend(cardsElement);
 });
-
-
