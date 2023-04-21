@@ -64,12 +64,6 @@ function closePopupPlace() {
   closePopup(popupPlace);
 }
 
-
-addButton.addEventListener('click', openPopupPlace);
-
-closePlaceButton.addEventListener('click', closePopupPlace);
-
-
 function formSubmitPlaceHandler(evt) {
   evt.preventDefault();
 const nameImageText = inputTitle.value;
@@ -85,13 +79,16 @@ const cardsElement = createCard(cardInfo);
   closePopupPlace();
 }
 
+addButton.addEventListener('click', openPopupPlace);
+
+closePlaceButton.addEventListener('click', closePopupPlace);
+
 formPlace.addEventListener('submit', formSubmitPlaceHandler);
+
 
 
 const cardsTemplate = document.getElementById('cards-template');
 const cardsGridContainer = document.querySelector('.element');
-
-
 const zoomImage = document.querySelector('.popup_type_image');
 const zoomImageSrc = document.querySelector('.popup__card');
 const zoomImageTitle = document.querySelector('.popup__title');
@@ -134,7 +131,6 @@ function createCard (cardsData) {
 
   cardDeleteButton.addEventListener('click', handleDeleteCard);
   cardLikeButton.addEventListener('click', handleLikeCard);
-
 
   cardImage.addEventListener('click', function() {
     zoomCard(cardImage)
