@@ -4,12 +4,29 @@ import {initialCards} from './constants.js'
 
 const editButton = document.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_name');
-const closeButton = document.querySelector('.popup__close_type_name');
+const closeNameButton = document.querySelector('.popup__close_type_name');
 const profileName = document.querySelector('.profile__name');
 const profileSubtitle = document.querySelector('.profile__subtitle');
 const inputName = document.querySelector('.popup__field_key_name');
 const inputSubtitle = document.querySelector('.popup__field_key_subtitle');
 const formElement = document.querySelector('.popup__form_type_name')
+
+const addButton = document.querySelector('.profile__add-button');
+const popupPlace = document.querySelector('.popup_type_place');
+const imageLink = document.querySelector('.element__image'); 
+const imageTitle = document.querySelector('.element__title-text');
+const inputTitle = document.querySelector('.popup__field_key_title');
+const inputLink = document.querySelector('.popup__field_key_image');
+const closePlaceButton = document.querySelector('.popup__close_type_place');
+const formPlace = document.querySelector('.popup__form_type_place');
+
+
+const cardsTemplate = document.getElementById('cards-template');
+const cardsGridContainer = document.querySelector('.element');
+const zoomImage = document.querySelector('.popup_type_image');
+const zoomImageSrc = document.querySelector('.popup__card');
+const zoomImageTitle = document.querySelector('.popup__title');
+const closeZoomImage = document.querySelector('.popup__close_type_image');
 
 
 function openPopup(modalWindow) {
@@ -38,22 +55,8 @@ function formSubmitEditHandler(evt) {
 }
 
 
-editButton.addEventListener('click', openPopupEdit);
-
-closeButton.addEventListener('click', closePopupEdit);
-
-formElement.addEventListener('submit', formSubmitEditHandler);
 
 
-
-const addButton = document.querySelector('.profile__add-button');
-const popupPlace = document.querySelector('.popup_type_place');
-const imageLink = document.querySelector('.element__image'); 
-const imageTitle = document.querySelector('.element__title-text');
-const inputTitle = document.querySelector('.popup__field_key_title');
-const inputLink = document.querySelector('.popup__field_key_image');
-const closePlaceButton = document.querySelector('.popup__close_type_place');
-const formPlace = document.querySelector('.popup__form_type_place');
 
 
 function openPopupPlace() {
@@ -79,20 +82,6 @@ const cardsElement = createCard(cardInfo);
   closePopupPlace();
 }
 
-addButton.addEventListener('click', openPopupPlace);
-
-closePlaceButton.addEventListener('click', closePopupPlace);
-
-formPlace.addEventListener('submit', formSubmitPlaceHandler);
-
-
-
-const cardsTemplate = document.getElementById('cards-template');
-const cardsGridContainer = document.querySelector('.element');
-const zoomImage = document.querySelector('.popup_type_image');
-const zoomImageSrc = document.querySelector('.popup__card');
-const zoomImageTitle = document.querySelector('.popup__title');
-const closeZoomImage = document.querySelector('.popup__close_type_image');
 
 function zoomCard(cardImage) {
   const imageElementLink = cardImage.src;
@@ -148,3 +137,19 @@ initialCards.forEach((cardsData) => {
   const cardsElement = createCard(cardsData);
   cardsGridContainer.prepend(cardsElement);
 });
+
+
+
+
+editButton.addEventListener('click', openPopupEdit);
+
+closeNameButton.addEventListener('click', closePopupEdit);
+
+formElement.addEventListener('submit', formSubmitEditHandler);
+
+
+addButton.addEventListener('click', openPopupPlace);
+
+closePlaceButton.addEventListener('click', closePopupPlace);
+
+formPlace.addEventListener('submit', formSubmitPlaceHandler);
