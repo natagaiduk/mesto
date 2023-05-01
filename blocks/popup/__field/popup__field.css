@@ -6,7 +6,7 @@
 	font-size: 14px;
 	line-height: 1.2;
 	border-bottom: 1px solid rgba(0, 0, 0, .2);
-	margin: 0 0 20px;
+	margin: 0 0 5px;
 }
 
 .popup__field:focus {
@@ -16,6 +16,6 @@
 @media screen and (max-width: 440px) {
 	.popup__field {
 		width: calc(100% - 22px*2);
-		margin: 20px 0 0;
+		margin: 5px 0 0;
 	}
 }

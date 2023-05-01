@@ -50,10 +50,30 @@
             <h2 class="popup__edit">
               Редактировать профиль
             </h2>
-            <form class="popup__form popup__form_type_name" name="submit">
-              <input class="popup__field popup__field_key_name" name="name" type="text" placeholder="Имя">
-              <input class="popup__field popup__field_key_subtitle" name="subtitle" type="text" placeholder="О себе">
-              <button type="submit" class="popup__save-button">
+            <form novalidate class="popup__form popup__form_type_name" name="submit">
+              <input
+                minlength="2"
+                maxlength="40"
+                required
+                class="popup__field popup__field_key_name"
+                name="name-input"
+                type="text"
+                placeholder="Имя"
+                >
+              <p class="popup__message_invalid name-input_invalid"></p>
+              <input
+                minlength="2"
+                maxlength="200"
+                required
+                class="popup__field popup__field_key_subtitle"
+                name="name-subtitle"
+                type="text"
+                placeholder="О себе"
+                >
+              <p class="popup__message_invalid name-subtitle_invalid"></p>
+              <button
+              type="submit"
+              class="popup__save-button popup__save-button_type_name popup__save-button_invalid">
                 Сохранить
               </button>
             </form>
@@ -67,10 +87,28 @@
             <h2 class="popup__edit">
               Новое место
             </h2>
-            <form class="popup__form popup__form_type_place" name="submit">
-              <input class="popup__field popup__field_key_title" name="name" type="text" placeholder="Название">
-              <input class="popup__field popup__field_key_image" name="image" type="text" placeholder="Ссылка на картинку">
-              <button type="submit" class="popup__save-button">
+            <form novalidate class="popup__form popup__form_type_place" name="submit">
+              <input
+                minlength="2"
+                maxlength="30"
+                required
+                class="popup__field popup__field_key_title"
+                name="place-edit"
+                type="text"
+                placeholder="Название"
+                >
+              <p class="popup__message_invalid place-edit_invalid"></p>
+              <input
+                type="url"
+                required
+                class="popup__field popup__field_key_image"
+                name="place-link"
+                placeholder="Ссылка на картинку"
+                >
+              <p class="popup__message_invalid place-link_invalid"></p>
+              <button
+              type="submit"
+              class="popup__save-button popup__save-button_type_place popup__save-button_invalid">
                 Создать
               </button>
             </form>
@@ -110,5 +148,6 @@
     </template>
 
     <script src="scripts/index.js" type="module"></script>
+    <script src="scripts/validate.js"></script>
   </body>
 </html>
