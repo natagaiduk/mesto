@@ -20,7 +20,6 @@ const inputLink = document.querySelector('.popup__field_key_image');
 const closePlaceButton = document.querySelector('.popup__close_type_place');
 const formPlace = document.querySelector('.popup__form_type_place');
 
-
 const cardsTemplate = document.getElementById('cards-template');
 const cardsGridContainer = document.querySelector('.element');
 const zoomImage = document.querySelector('.popup_type_image');
@@ -29,8 +28,12 @@ const zoomImageTitle = document.querySelector('.popup__title');
 const closeZoomImage = document.querySelector('.popup__close_type_image');
 
 
+
+
 function openPopup(modalWindow) {
   modalWindow.classList.add('popup_opened');
+  document.addEventListener('keydown', closePopupEsc);
+  document.addEventListener('click', closePopupOverlay);
 }
 
 function closePopup(modalWindow) {
@@ -53,11 +56,6 @@ function formSubmitEditHandler(evt) {
   profileSubtitle.textContent = inputSubtitle.value;
   closePopupEdit();
 }
-
-
-
-
-
 
 function openPopupPlace() {
   openPopup(popupPlace);
@@ -140,6 +138,33 @@ initialCards.forEach((cardsData) => {
 
 
 
+function closePopupEsc(evt) {
+  if (evt.key === 'Escape') {
+    closePopup(document.querySelector('.popup_opened'));
+  }
+};
+
+function closePopupOverlay(popupElement, evt) {
+  if (evt && evt.target) {
+    const isOverlay = evt.target.classList.contains('popup');
+    const isCloseBtn = evt.target.classList.contains('popup__close');
+    if (isOverlay || isCloseBtn) {
+      closePopup(popupElement);
+    }
+  }
+};
+
+document.addEventListener('click', function(evt) {
+  closePopupOverlay(popupPlace, evt);
+});
+
+document.addEventListener('click', function(evt) {
+  closePopupOverlay(popupEdit, evt);
+});
+
+document.addEventListener('click', function(evt) {
+  closePopupOverlay(zoomImage, evt);
+});
 
 editButton.addEventListener('click', openPopupEdit);
 
