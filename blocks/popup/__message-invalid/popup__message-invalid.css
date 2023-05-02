@@ -1,4 +1,4 @@
-.popup__message_invalid {
+.popup__message-invalid {
 	color: rgb(255, 0, 0);
 	padding: 0;
 	align-self: start;
@@ -8,7 +8,7 @@
 }
 
 @media screen and (max-width: 320px) {
-	.popup__message_invalid {
+	.popup__message-invalid {
 		margin: 5px 0 0 20px;
 	}
 }
