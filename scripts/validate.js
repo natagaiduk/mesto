@@ -1,4 +1,5 @@
 
+
 function defineInputError(formElement, inputElement) {
   return formElement.querySelector(`.${inputElement.name}-invalid`);
 };
@@ -33,15 +34,14 @@ function setEventListeners(formElement, enableConfig) {
       toggleButtonState(inputList, buttonElement, enableConfig);
     });
   });
-
+  formElement.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+  });
 };
 
 function enableValidation(enableConfig) {
   const formList = Array.from(document.querySelectorAll(enableConfig.formSelector));
   formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-    });
     setEventListeners(formElement, enableConfig);
   });
 };
@@ -54,13 +54,23 @@ function hasInvalidInput(inputList) {
 
 function toggleButtonState(inputList, buttonElement, enableConfig) {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(enableConfig.inactiveButtonClass);
-    buttonElement.setAttribute('disabled', '');
+    disableButton(buttonElement, enableConfig);
   } else {
-    buttonElement.classList.remove(enableConfig.inactiveButtonClass);
-    buttonElement.removeAttribute('disabled');
+    enableButton(buttonElement,enableConfig);
   }
 };
+
+
+function enableButton(buttonElement, enableConfig) {
+  buttonElement.classList.remove(enableConfig.inactiveButtonClass);
+  buttonElement.removeAttribute('disabled'); 
+}
+
+
+function disableButton(buttonElement, enableConfig) {
+  buttonElement.classList.add(enableConfig.inactiveButtonClass);
+  buttonElement.setAttribute('disabled', '');
+}
 
 enableValidation({
   formSelector: '.popup__form',

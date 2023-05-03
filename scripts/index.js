@@ -33,11 +33,11 @@ const closeZoomImage = document.querySelector('.popup__close_type_image');
 function openPopup(modalWindow) {
   modalWindow.classList.add('popup_opened');
   document.addEventListener('keydown', closePopupEsc);
-  document.addEventListener('click', closePopupOverlay);
 }
 
 function closePopup(modalWindow) {
   modalWindow.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupEsc);
 };
 
 function openPopupEdit() {
@@ -67,17 +67,17 @@ function closePopupPlace() {
 
 function formSubmitPlaceHandler(evt) {
   evt.preventDefault();
-const nameImageText = inputTitle.value;
-const linkText = inputLink.value;
+  const nameImageText = inputTitle.value;
+  const linkText = inputLink.value;
 
-const cardInfo = {
-  name: nameImageText,
-  link: linkText
+  const cardInfo = {
+    name: nameImageText,
+    link: linkText
 }
 
-const cardsElement = createCard(cardInfo);
-  cardsGridContainer.prepend(cardsElement);
-  closePopupPlace();
+  const cardsElement = createCard(cardInfo);
+    cardsGridContainer.prepend(cardsElement);
+    closePopupPlace();
 }
 
 
@@ -144,7 +144,7 @@ function closePopupEsc(evt) {
   }
 };
 
-function closePopupOverlay(popupElement, evt) {
+function closePopupOverlayOrButton(popupElement, evt) {
   if (evt && evt.target) {
     const isOverlay = evt.target.classList.contains('popup');
     const isCloseBtn = evt.target.classList.contains('popup__close');
@@ -155,15 +155,15 @@ function closePopupOverlay(popupElement, evt) {
 };
 
 document.addEventListener('click', function(evt) {
-  closePopupOverlay(popupPlace, evt);
+  closePopupOverlayOrButton(popupPlace, evt);
 });
 
 document.addEventListener('click', function(evt) {
-  closePopupOverlay(popupEdit, evt);
+  closePopupOverlayOrButton(popupEdit, evt);
 });
 
 document.addEventListener('click', function(evt) {
-  closePopupOverlay(zoomImage, evt);
+  closePopupOverlayOrButton(zoomImage, evt);
 });
 
 editButton.addEventListener('click', openPopupEdit);
