@@ -1,5 +1,5 @@
-import {initialCards} from './constants.js'
-
+import { Card, initialCards } from './Card.js';
+import { formValidators } from './FormValidator.js'
 
 
 const editButton = document.querySelector('.profile__edit-button');
@@ -30,7 +30,7 @@ const closeZoomImage = document.querySelector('.popup__close_type_image');
 
 
 
-function openPopup(modalWindow) {
+export function openPopup(modalWindow) {
   modalWindow.classList.add('popup_opened');
   document.addEventListener('keydown', closePopupEsc);
 }
@@ -81,7 +81,7 @@ function formSubmitPlaceHandler(evt) {
 }
 
 
-function zoomCard(cardImage) {
+export function zoomCard(cardImage) {
   const imageElementLink = cardImage.src;
   const imageElementAlt = cardImage.alt;
   zoomImageSrc.src = imageElementLink;
@@ -96,45 +96,7 @@ function zoomCard(cardImage) {
   }
 
 
-function createCard (cardsData) {
-  const clonedCard = cardsTemplate.content.querySelector('.element__group').cloneNode(true);
-  const cardImage = clonedCard.querySelector('.element__image');
-  const cardTitle = clonedCard.querySelector('.element__title-text');
-  const cardDeleteButton = clonedCard.querySelector('.element__trash');
-  const cardLikeButton = clonedCard.querySelector('.element__heart');
 
-
-  cardTitle.textContent = cardsData.name;
-  cardImage.src = cardsData.link;
-  cardImage.alt = cardsData.name;
-
-  function handleDeleteCard() {
-    clonedCard.remove();
-  }
-
-  function handleLikeCard(evt) {
-    cardLikeButton.classList.toggle('element__heart_active');
-  }
-
-  cardDeleteButton.addEventListener('click', handleDeleteCard);
-  cardLikeButton.addEventListener('click', handleLikeCard);
-
-  cardImage.addEventListener('click', function() {
-    zoomCard(cardImage)
-  });
-
-
-  closeZoomImage.addEventListener('click', zoomClose);
-
-  return clonedCard;
-
-};
-
-
-initialCards.forEach((cardsData) => {
-  const cardsElement = createCard(cardsData);
-  cardsGridContainer.prepend(cardsElement);
-});
 
 
 
@@ -153,6 +115,12 @@ function closePopupOverlayOrButton(popupElement, evt) {
     }
   }
 };
+
+function createCardByClass(cardsData) {
+  const card = new Card(cardsData, templateSelector, handleCardClick);
+  const newCard = card.generateCard();
+  return newCard;
+}
 
 document.addEventListener('click', function(evt) {
   closePopupOverlayOrButton(popupPlace, evt);
