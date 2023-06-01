@@ -1,5 +1,6 @@
-import {initialCards} from './constants.js'
-
+import {initialCards} from './constants.js';
+import {Card} from './Card.js';
+import FormValidator from './FormValidator.js';
 
 
 const editButton = document.querySelector('.profile__edit-button');
@@ -21,7 +22,7 @@ const closePlaceButton = document.querySelector('.popup__close_type_place');
 const formPlace = document.querySelector('.popup__form_type_place');
 
 const cardsTemplate = document.getElementById('cards-template');
-const cardsGridContainer = document.querySelector('.element');
+
 const zoomImage = document.querySelector('.popup_type_image');
 const zoomImageSrc = document.querySelector('.popup__card');
 const zoomImageTitle = document.querySelector('.popup__title');
@@ -67,23 +68,27 @@ function closePopupPlace() {
 
 function formSubmitPlaceHandler(evt) {
   evt.preventDefault();
-const nameImageText = inputTitle.value;
-const linkText = inputLink.value;
+  const nameImageText = inputTitle.value;
+  const linkText = inputLink.value;
 
-const cardInfo = {
-  name: nameImageText,
-  link: linkText
-}
+  const cardInfo = {
+    name: nameImageText,
+    link: linkText
+  };
 
-const cardsElement = createCard(cardInfo);
-  cardsGridContainer.prepend(cardsElement);
+  const card = new Card(cardInfo, cardsTemplateSelector, zoomCard);
+  const cardElement = card.generateCard();
+  cardsGridContainer.prepend(cardElement);
+
   closePopupPlace();
+  formPlace.reset();
 }
 
 
-function zoomCard(cardImage) {
-  const imageElementLink = cardImage.src;
-  const imageElementAlt = cardImage.alt;
+
+function zoomCard(cardsData) {
+  const imageElementLink = cardsData.link;
+  const imageElementAlt = cardsData.name;
   zoomImageSrc.src = imageElementLink;
   zoomImageSrc.alt = imageElementAlt;
   zoomImageTitle.textContent = imageElementAlt;
@@ -96,45 +101,17 @@ function zoomCard(cardImage) {
   }
 
 
-function createCard (cardsData) {
-  const clonedCard = cardsTemplate.content.querySelector('.element__group').cloneNode(true);
-  const cardImage = clonedCard.querySelector('.element__image');
-  const cardTitle = clonedCard.querySelector('.element__title-text');
-  const cardDeleteButton = clonedCard.querySelector('.element__trash');
-  const cardLikeButton = clonedCard.querySelector('.element__heart');
 
-
-  cardTitle.textContent = cardsData.name;
-  cardImage.src = cardsData.link;
-  cardImage.alt = cardsData.name;
-
-  function handleDeleteCard() {
-    clonedCard.remove();
-  }
-
-  function handleLikeCard(evt) {
-    cardLikeButton.classList.toggle('element__heart_active');
-  }
-
-  cardDeleteButton.addEventListener('click', handleDeleteCard);
-  cardLikeButton.addEventListener('click', handleLikeCard);
-
-  cardImage.addEventListener('click', function() {
-    zoomCard(cardImage)
-  });
-
-
-  closeZoomImage.addEventListener('click', zoomClose);
-
-  return clonedCard;
-
-};
+const cardsTemplateSelector = '#cards-template'; 
+const cardsGridContainer = document.querySelector('.element');
 
 
 initialCards.forEach((cardsData) => {
-  const cardsElement = createCard(cardsData);
-  cardsGridContainer.prepend(cardsElement);
+  const card = new Card(cardsData, cardsTemplateSelector, zoomCard);
+  const cardElement = card.generateCard();
+  cardsGridContainer.prepend(cardElement);
 });
+
 
 
 
@@ -178,3 +155,31 @@ addButton.addEventListener('click', openPopupPlace);
 closePlaceButton.addEventListener('click', closePopupPlace);
 
 formPlace.addEventListener('submit', formSubmitPlaceHandler);
+
+
+const formValidatorName = new FormValidator(
+{
+  formSelector: '.popup__form',
+  inputSelector: '.popup__field',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_invalid',
+  inputErrorClass: 'popup__field_invalid',
+  errorClass: 'popup__message_invalid'
+},
+document.querySelector('.popup__form_type_name')
+);
+
+const formValidatorPlace = new FormValidator(
+{
+  formSelector: '.popup__form',
+  inputSelector: '.popup__field',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_invalid',
+  inputErrorClass: 'popup__field_invalid',
+  errorClass: 'popup__message_invalid'
+},
+document.querySelector('.popup__form_type_place')
+);
+
+formValidatorName.enableValidation();
+formValidatorPlace.enableValidation();
