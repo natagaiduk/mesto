@@ -4,12 +4,9 @@
 	align-self: start;
 	font-size: 12px;
 	margin: 0 0 0 36px;
-<<<<<<< HEAD:blocks/popup/__message/_invalid/popup__message_invalid.css
 	max-width: 360px;
-=======
 	width: calc(100% - 36px*2);
 	height: 30px;
->>>>>>> 4abb8a184f7ab4b5d1ac608109eaa8d2d3d58657:blocks/popup/__message-invalid/popup__message-invalid.css
 }
 
 @media screen and (max-width: 320px) {
