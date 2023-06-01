@@ -8,7 +8,7 @@ export default class FormValidator {
   }
 
   _defineInputError(inputElement) {
-    return this._formElement.querySelector(`.${inputElement.name}_invalid`);
+    return this._formElement.querySelector(`.${inputElement.name}-invalid`);
   }
 
   _showInputError(inputElement, errorMessage) {
