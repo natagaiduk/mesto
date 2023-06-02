@@ -45,10 +45,4 @@ export class Card {
     return this._element;
   }
 
-  _setEventListeners() {
-    const cardImage = this._element.querySelector('.element__image');
-    cardImage.addEventListener('click', () => {
-      this._handleCardClick(this._cardsData);
-    });
-  }
 }
