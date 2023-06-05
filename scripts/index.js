@@ -62,8 +62,6 @@ function formSubmitEditHandler(evt) {
 
 function openPopupPlace() {
   openPopup(popupPlace);
-  document.querySelector('.popup__save-button').classList.add('popup__save-button_invalid');
-  formValidatorPlace.resetValidation();
 };
 
 function closePopupPlace() {
@@ -85,9 +83,7 @@ function formSubmitPlaceHandler(evt, ) {
 
   closePopupPlace();
   formPlace.reset();
-  evt.target.reset();
-  evt.submitter.classList.add('popup__save-button_invalid');
-  evt.submitter.disabled = true; 
+  formValidatorPlace.toggleButtonState();
   closePopup(popupPlace);
 }
 
@@ -121,8 +117,7 @@ const cardsTemplateSelector = '#cards-template';
 
 
 initialCards.forEach((cardsData) => {
-  const card = new Card(cardsData, cardsTemplateSelector, zoomCard);
-  const cardElement = card.generateCard();
+  const cardElement = generateAndAppendCard(cardsData);
   cardsGridContainer.prepend(cardElement);
 });
 
