@@ -22,19 +22,13 @@ const formProfileName = document.querySelector('.popup__form_type_name');
 
 const buttonForAdd = document.querySelector('.profile__add-button');
 const popupPlace = new PopupWithForm('.popup_type_place', formSubmitPlaceHandler);
-const imageLink = document.querySelector('.element__image');
-const imageTitle = document.querySelector('.element__title-text');
 const inputTitle = document.querySelector('.popup__field_key_title');
 const inputLink = document.querySelector('.popup__field_key_image');
 const buttonForClosingPlace = document.querySelector('.popup__close_type_place');
 const formPlace = document.querySelector('.popup__form_type_place');
 
-const cardsTemplate = document.getElementById('cards-template');
 
 const imageZoomed = new PopupWithImage('.popup_type_image');
-const imageZoomedSrc = document.querySelector('.popup__card');
-const imageZoomedTitle = document.querySelector('.popup__title');
-const imageZoomedClosingButton = document.querySelector('.popup__close_type_image');
 const cardsGridContainer = document.querySelector('.element');
 
 const cardsTemplateSelector = '#cards-template';
@@ -52,115 +46,69 @@ userInfo.setInitialUserInfo();
 
 
 const cardSection = new Section({
-  items: initialCards,
+  items: initialCards.reverse(),
   renderer: (cardData) => {
-    const cardElement = generateAndAppendCard(cardData, imageZoomed);
+    const cardElement = generateThisCard(cardData, imageZoomed);
     cardSection.addItem(cardElement);
   }
 }, '.element');
 
 cardSection.renderItems();
 
-function openPopup(modalWindow) {
-  modalWindow.open();
-  document.addEventListener('keydown', closePopupEsc);
-  document.addEventListener('mousedown', closePopupOverlay);
-}
-
-function closePopup(modalWindow) {
-  modalWindow.close();
-  document.removeEventListener('keydown', closePopupEsc);
-  document.removeEventListener('mousedown', closePopupOverlay);
-}
 
 function openPopupEdit() {
-  openPopup(popupEdit);
+  popupEdit.open();
   inputName.value = profileName.textContent;
   inputSubtitle.value = profileSubtitle.textContent;
 }
 
 function closePopupEdit() {
-  closePopup(popupEdit);
+  popupEdit.close();
 }
 
-function formSubmitEditHandler(evt) {
-  evt.preventDefault();
+function formSubmitEditHandler() {
   profileName.textContent = inputName.value;
   profileSubtitle.textContent = inputSubtitle.value;
   closePopupEdit();
 }
 
 function openPopupPlace() {
-  openPopup(popupPlace);
+  popupPlace.open();
 }
 
 function closePopupPlace() {
-  closePopup(popupPlace);
+  popupPlace.close();
 }
 
-function formSubmitPlaceHandler(evt) {
-  evt.preventDefault();
-  const nameImageText = inputTitle.value;
-  const linkText = inputLink.value;
-
-  const cardInfo = {
-    name: nameImageText,
-    link: linkText
-  };
-
-  const cardElement = generateAndAppendCard(cardInfo);
-  cardsGridContainer.prepend(cardElement);
+function formSubmitPlaceHandler(formData) {
+  const cardElement = generateThisCard(formData);
+  
+  cardSection.addItem(cardElement, 'afterbegin');
 
   closePopupPlace();
   formPlace.reset();
   formValidatorPlace.toggleButtonState();
-  closePopup(popupPlace);
+  popupPlace.close();
 }
 
-function generateAndAppendCard(cardsData, popup) {
-  const card = new Card(cardsData, cardsTemplateSelector, () => {
+function generateThisCard(cardsData) {
+  const card = new Card({
+    name: cardsData.name,
+    link: cardsData.link
+  },cardsTemplateSelector, () => {
     imageZoomed.open(cardsData.link, cardsData.name)
   }, imageZoomed);
   return card.generateCard();
 }
 
-//function zoomCard(cardsData) {
-//  const imageElementLink = cardsData.link;
-//  const imageElementAlt = cardsData.name;
-//  imageZoomedSrc.src = imageElementLink;
-//  imageZoomedSrc.alt = imageElementAlt;
-//  imageZoomedTitle.textContent = imageElementAlt;
-//  openPopup(imageZoomed);
-//}
 
-function zoomCard(cardsData) {
-  imageZoomed.open(cardsData.link, cardsData.name);
-}
 
-function closePopupEsc(evt) {
-  if (evt.key === 'Escape') {
-    closePopup(Popup.getOpenedPopup());
-  }
-}
 
-function closePopupOverlay(evt) {
-  if (evt && evt.target) {
-    const isOverlay = evt.target.classList.contains('popup');
-    const isCloseBtn = evt.target.classList.contains('popup__close');
-    if (isOverlay || isCloseBtn) {
-      const openedPopup = Popup.getOpenedPopup();
-      closePopup(openedPopup);
-    }
-  }
-}
+
 
 buttonForEdit.addEventListener('click', openPopupEdit);
-buttonForClosingName.addEventListener('click', closePopupEdit);
-formProfileName.addEventListener('submit', formSubmitEditHandler);
 
 buttonForAdd.addEventListener('click', openPopupPlace);
-buttonForClosingPlace.addEventListener('click', closePopupPlace);
-formPlace.addEventListener('submit', formSubmitPlaceHandler);
 
 popupEdit.setEventListeners();
 popupPlace.setEventListeners();
