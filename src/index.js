@@ -1,7 +1,5 @@
 import './pages/index.css';
 
-
-
 import { initialCards } from './scripts/constants.js';
 import { Card } from './scripts/Card.js';
 import FormValidator from './scripts/FormValidator.js';
@@ -27,12 +25,10 @@ const inputLink = document.querySelector('.popup__field_key_image');
 const buttonForClosingPlace = document.querySelector('.popup__close_type_place');
 const formPlace = document.querySelector('.popup__form_type_place');
 
-
 const imageZoomed = new PopupWithImage('.popup_type_image');
 const cardsGridContainer = document.querySelector('.element');
 
 const cardsTemplateSelector = '#cards-template';
-
 
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
@@ -41,9 +37,7 @@ const userInfo = new UserInfo({
 
 const userData = userInfo.getUserInfo();
 
-userInfo.setInitialUserInfo(); 
-
-
+userInfo.setInitialUserInfo();
 
 const cardSection = new Section({
   items: initialCards.reverse(),
@@ -54,7 +48,6 @@ const cardSection = new Section({
 }, '.element');
 
 cardSection.renderItems();
-
 
 function openPopupEdit() {
   popupEdit.open();
@@ -67,9 +60,15 @@ function closePopupEdit() {
 }
 
 function formSubmitEditHandler() {
-  profileName.textContent = inputName.value;
-  profileSubtitle.textContent = inputSubtitle.value;
+  const formValues = popupEdit._getInputValues();
+  console.log(formValues);
+  const name = formValues['name']; 
+  const subtitle = formValues['subtitle'];
+
+  profileName.textContent = name;
+  profileSubtitle.textContent = subtitle;
   closePopupEdit();
+  popupEdit.setEventListeners();
 }
 
 function openPopupPlace() {
@@ -80,34 +79,38 @@ function closePopupPlace() {
   popupPlace.close();
 }
 
-function formSubmitPlaceHandler(formData) {
-  const cardElement = generateThisCard(formData);
-  
+function formSubmitPlaceHandler(formValues) {
+  const {
+    'place-edit': name, 
+    'place-link': link
+  } = formValues;
+  const cardElement = generateThisCard({
+    name: name,
+    link: link
+  });
+
   cardSection.addItem(cardElement, 'afterbegin');
 
   closePopupPlace();
   formPlace.reset();
   formValidatorPlace.toggleButtonState();
   popupPlace.close();
+  popupPlace.setEventListeners();
 }
+
+popupPlace.setSubmitCallback(formSubmitPlaceHandler);
 
 function generateThisCard(cardsData) {
   const card = new Card({
     name: cardsData.name,
     link: cardsData.link
-  },cardsTemplateSelector, () => {
+  }, cardsTemplateSelector, () => {
     imageZoomed.open(cardsData.link, cardsData.name)
   }, imageZoomed);
   return card.generateCard();
 }
 
-
-
-
-
-
 buttonForEdit.addEventListener('click', openPopupEdit);
-
 buttonForAdd.addEventListener('click', openPopupPlace);
 
 popupEdit.setEventListeners();
