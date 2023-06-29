@@ -61,9 +61,10 @@ function closePopupEdit() {
 
 function formSubmitEditHandler() {
   const formValues = popupEdit._getInputValues();
-  console.log(formValues);
-  const name = formValues['name']; 
-  const subtitle = formValues['subtitle'];
+  
+  const {
+    'name-input': name,
+    'name-subtitle': subtitle} = formValues;
 
   profileName.textContent = name;
   profileSubtitle.textContent = subtitle;
