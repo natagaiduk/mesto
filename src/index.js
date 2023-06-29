@@ -59,9 +59,7 @@ function closePopupEdit() {
   popupEdit.close();
 }
 
-function formSubmitEditHandler() {
-  const formValues = popupEdit._getInputValues();
-  
+function formSubmitEditHandler(formValues) {
   const {
     'name-input': name,
     'name-subtitle': subtitle} = formValues;
@@ -69,7 +67,6 @@ function formSubmitEditHandler() {
   profileName.textContent = name;
   profileSubtitle.textContent = subtitle;
   closePopupEdit();
-  popupEdit.setEventListeners();
 }
 
 function openPopupPlace() {
@@ -95,11 +92,8 @@ function formSubmitPlaceHandler(formValues) {
   closePopupPlace();
   formPlace.reset();
   formValidatorPlace.toggleButtonState();
-  popupPlace.close();
-  popupPlace.setEventListeners();
 }
 
-popupPlace.setSubmitCallback(formSubmitPlaceHandler);
 
 function generateThisCard(cardsData) {
   const card = new Card({
