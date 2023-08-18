@@ -1,0 +1,10 @@
+.popup__container_type_sure {
+	min-height: 181px;
+	min-width: 430px;
+	visibility: visible;
+	opacity: 1;
+}
+
+.popup__save-button_type_sure {
+	margin: 0 35px;
+}

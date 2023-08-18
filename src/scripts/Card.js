@@ -1,9 +1,13 @@
+//import PopupSure from './PopupSure.js';
+//import PopupSure from './PopupSure.js';
+//import { openPopupSure } from './PopupSure.js';
+
 export class Card {
-  constructor(cardsData, templateSelector, handleCardClick, popup) {
+  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard) {
     this._cardsData = cardsData;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
-    this._popup = popup;
+    this._handleDeleteCard = handleDeleteCard;
   }
 
   _getTemplate() {
@@ -14,9 +18,9 @@ export class Card {
     return cardTemplate;
   }
 
-  _handleDeleteCard() {
-    this._element.remove();
-  }
+  _deleteCard() {
+  this._handleDeleteCard(this._cardsData.id);
+}
 
   _handleLikeCard() {
     this._likeButton.classList.toggle('element__heart_active');
@@ -43,7 +47,7 @@ export class Card {
     this._trashButton = this._element.querySelector('.element__trash');
 
     this._likeButton.addEventListener('click', this._handleLikeCard.bind(this));
-    this._trashButton.addEventListener('click', this._handleDeleteCard.bind(this));
+    this._trashButton.addEventListener('click', this._deleteCard.bind(this));
     this._cardImage.addEventListener('click', this._handleImageClick.bind(this));
 
     return this._element;

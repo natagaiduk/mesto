@@ -1,53 +1,94 @@
 import './pages/index.css';
-
-import { initialCards } from './scripts/constants.js';
 import { Card } from './scripts/Card.js';
 import FormValidator from './scripts/FormValidator.js';
 import { Section } from './scripts/Section.js';
-import Popup from './scripts/Popup.js';
 import PopupWithImage from './scripts/PopupWithImage.js';
 import PopupWithForm from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
+import PopupSure from './scripts/PopupSure.js';
 
 const buttonForEdit = document.querySelector('.profile__edit-button');
+const buttonForAdd = document.querySelector('.profile__add-button');
+
 const popupEdit = new PopupWithForm('.popup_type_name', formSubmitEditHandler);
-const buttonForClosingName = document.querySelector('.popup__close_type_name');
+const popupPlace = new PopupWithForm('.popup_type_place', formSubmitPlaceHandler);
+const imageZoomed = new PopupWithImage('.popup_type_image');
+const popupSure = new PopupSure('.popup_type_sure');
+
+const cardsGridContainer = document.querySelector('.element');
+const cardsTemplateSelector = '#cards-template';
+
 const profileName = document.querySelector('.profile__name');
 const profileSubtitle = document.querySelector('.profile__subtitle');
 const inputName = document.querySelector('.popup__field_key_name');
 const inputSubtitle = document.querySelector('.popup__field_key_subtitle');
 const formProfileName = document.querySelector('.popup__form_type_name');
-
-const buttonForAdd = document.querySelector('.profile__add-button');
-const popupPlace = new PopupWithForm('.popup_type_place', formSubmitPlaceHandler);
 const inputTitle = document.querySelector('.popup__field_key_title');
 const inputLink = document.querySelector('.popup__field_key_image');
-const buttonForClosingPlace = document.querySelector('.popup__close_type_place');
 const formPlace = document.querySelector('.popup__form_type_place');
-
-const imageZoomed = new PopupWithImage('.popup_type_image');
-const cardsGridContainer = document.querySelector('.element');
-
-const cardsTemplateSelector = '#cards-template';
 
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
   aboutSelector: '.profile__subtitle'
 });
 
-const userData = userInfo.getUserInfo();
+const formValidatorConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__field',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_invalid',
+  inputErrorClass: 'popup__field_invalid',
+  errorClass: 'popup__message_invalid'
+};
 
-userInfo.setInitialUserInfo();
+const formValidatorName = new FormValidator(formValidatorConfig, formProfileName);
+const formValidatorPlace = new FormValidator(formValidatorConfig, formPlace);
+
+formValidatorName.enableValidation();
+formValidatorPlace.enableValidation();
 
 const cardSection = new Section({
-  items: initialCards.reverse(),
   renderer: (cardData) => {
-    const cardElement = generateThisCard(cardData, imageZoomed);
+    const cardElement = generateCardElement(cardData);
     cardSection.addItem(cardElement);
   }
 }, '.element');
 
-cardSection.renderItems();
+async function fetchInitialCards() {
+  const cohortId = 'cohort-73';
+  const url = `https://mesto.nomoreparties.co/v1/${cohortId}/cards`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      authorization: '2b8cc866-b1cb-4cb1-a139-86e0e04b8844'
+    }
+  });
+
+  if (response.ok) {
+    const cardsData = await response.json();
+    return cardsData;
+  } else {
+    throw new Error('Failed to fetch initial cards');
+  }
+}
+
+async function generateCardElement(cardData) {
+  const card = new Card({
+    name: cardData.name,
+    link: cardData.link
+  }, cardsTemplateSelector, () => {
+    imageZoomed.open(cardData.link, cardData.name);
+  }, (idCard) => {
+    popupSure.open();
+    popupSure.setSubmitSure(() => {
+      // Запрос к апи
+    });
+    console.log(idCard);
+  });
+
+  return card.generateCard();
+}
 
 function openPopupEdit() {
   popupEdit.open();
@@ -62,7 +103,8 @@ function closePopupEdit() {
 function formSubmitEditHandler(formValues) {
   const {
     'name-input': name,
-    'name-subtitle': subtitle} = formValues;
+    'name-subtitle': subtitle
+  } = formValues;
 
   profileName.textContent = name;
   profileSubtitle.textContent = subtitle;
@@ -79,10 +121,10 @@ function closePopupPlace() {
 
 function formSubmitPlaceHandler(formValues) {
   const {
-    'place-edit': name, 
+    'place-edit': name,
     'place-link': link
   } = formValues;
-  const cardElement = generateThisCard({
+  const cardElement = generateCardElement({
     name: name,
     link: link
   });
@@ -94,35 +136,31 @@ function formSubmitPlaceHandler(formValues) {
   formValidatorPlace.toggleButtonState();
 }
 
+async function init() {
+  userInfo.setInitialUserInfo();
 
-function generateThisCard(cardsData) {
-  const card = new Card({
-    name: cardsData.name,
-    link: cardsData.link
-  }, cardsTemplateSelector, () => {
-    imageZoomed.open(cardsData.link, cardsData.name)
-  }, imageZoomed);
-  return card.generateCard();
+  try {
+    const cardsData = await fetchInitialCards();
+    cardsData.forEach((cardData) => {
+      const cardElement = generateCardElement(cardData);
+      cardSection.addItem(cardElement);
+    });
+    cardSection.renderItems();
+  } catch (error) {
+    console.error(error);
+  }
+
+  buttonForEdit.addEventListener('click', openPopupEdit);
+  buttonForAdd.addEventListener('click', openPopupPlace);
+
+  popupEdit.setEventListeners();
+  popupPlace.setEventListeners();
+  imageZoomed.setEventListeners();
+  popupSure.setEventListeners();
 }
 
-buttonForEdit.addEventListener('click', openPopupEdit);
-buttonForAdd.addEventListener('click', openPopupPlace);
+popupPlace.setSubmitCallback((formValues) => {
+  formSubmitPlaceHandler(formValues);
+});
 
-popupEdit.setEventListeners();
-popupPlace.setEventListeners();
-imageZoomed.setEventListeners();
-
-const config = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__field',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_invalid',
-  inputErrorClass: 'popup__field_invalid',
-  errorClass: 'popup__message_invalid'
-};
-
-const formValidatorName = new FormValidator(config, formProfileName);
-const formValidatorPlace = new FormValidator(config, formPlace);
-
-formValidatorName.enableValidation();
-formValidatorPlace.enableValidation();
+init();

@@ -15,4 +15,5 @@
 	justify-content: center;
 	display: flex;
 	transition: visibility .3s, opacity .3s linear;
+	pointer-events: none;
 }

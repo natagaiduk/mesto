@@ -126,6 +126,20 @@
           </div>
         </section>
 
+        <section class="popup popup_type_sure">
+          <div class="popup__container popup__container_type_sure">
+            <button class="popup__close popup__close_type_sure" type="button"></button>
+            <p class="popup__edit">
+              Вы уверены?
+            </p>
+            <button
+              type="submit"
+              class="popup__save-button popup__save-button_type_sure">
+                Да
+              </button>
+          </div>
+        </section>
+
     </div>
 
     <template id="cards-template">
@@ -140,10 +154,16 @@
           <h2 class="element__title-text">
             
           </h2>
-          <button class="element__heart" type="button">
-            <img src="<%=require('./images/heart.svg')%>" alt="кнопка поставить лайк">
-          </button>
+          <div>
+            <button class="element__heart" type="button">
+              <img src="<%=require('./images/heart.svg')%>" alt="кнопка поставить лайк">
+            </button>
+            <div class="element__likecounter">
+                0
+            </div>
+          </div>
         </div>
+
       </article>
     </template>
 
