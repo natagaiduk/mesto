@@ -3,11 +3,12 @@
 //import { openPopupSure } from './PopupSure.js';
 
 export class Card {
-  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard) {
+  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, ownerId) {
     this._cardsData = cardsData;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteCard = handleDeleteCard;
+    this._ownerId = ownerId;
   }
 
   _getTemplate() {

@@ -73,19 +73,24 @@ async function fetchInitialCards() {
   }
 }
 
-async function generateCardElement(cardData) {
+async function generateCardElement(cardData, userId) {
   const card = new Card({
     name: cardData.name,
-    link: cardData.link
-  }, cardsTemplateSelector, () => {
+    link: cardData.link,
+    ownerId: cardData.owner._id
+  },
+  cardsTemplateSelector, () => {
     imageZoomed.open(cardData.link, cardData.name);
-  }, (idCard) => {
+  },
+  (idCard) => {
+    if (userId ===cardData.owner._id) {
     popupSure.open();
     popupSure.setSubmitSure(() => {
-      // Запрос к апи
+      deleteCard(idCard);
     });
+  }
     console.log(idCard);
-  });
+  }, userId);
 
   return card.generateCard();
 }
@@ -100,15 +105,19 @@ function closePopupEdit() {
   popupEdit.close();
 }
 
-function formSubmitEditHandler(formValues) {
+async function formSubmitEditHandler(formValues) {
   const {
     'name-input': name,
-    'name-subtitle': subtitle
+    'name-subtitle': about
   } = formValues;
 
-  profileName.textContent = name;
-  profileSubtitle.textContent = subtitle;
-  closePopupEdit();
+  try {
+    const updatedUserData = await userInfo.updateProfileInfoOnServer(name, about);
+    userInfo.setUserInfo(updatedUserData);
+    closePopupEdit();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function openPopupPlace() {
@@ -119,32 +128,53 @@ function closePopupPlace() {
   popupPlace.close();
 }
 
-function formSubmitPlaceHandler(formValues) {
+async function formSubmitPlaceHandler(formValues) {
   const {
     'place-edit': name,
     'place-link': link
   } = formValues;
-  const cardElement = generateCardElement({
-    name: name,
-    link: link
-  });
-
-  cardSection.addItem(cardElement, 'afterbegin');
-
-  closePopupPlace();
-  formPlace.reset();
-  formValidatorPlace.toggleButtonState();
-}
-
-async function init() {
-  userInfo.setInitialUserInfo();
 
   try {
-    const cardsData = await fetchInitialCards();
-    cardsData.forEach((cardData) => {
-      const cardElement = generateCardElement(cardData);
-      cardSection.addItem(cardElement);
+    const cardData = { name, link };
+    const cardElement = await generateCardElement(cardData); 
+
+    cardSection.addItem(cardElement, 'afterbegin');
+
+    closePopupPlace();
+    formPlace.reset();
+    formValidatorPlace.toggleButtonState();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+async function init() {
+
+
+  try {
+    const userInfo = new UserInfo({
+      nameSelector: '.profile__name',
+      aboutSelector: '.profile__subtitle'
     });
+    const userData = await userInfo.fetchUserData();
+    const userId = userData._id; 
+
+
+    const cardsData = await fetchInitialCards();
+
+
+        const cardPromises = cardsData.map(cardData => generateCardElement(cardData, userId));
+
+        const cardElements = await Promise.all(cardPromises);
+
+        cardElements.forEach(cardElement => {
+          cardSection.addItem(cardElement);
+    });
+
+    const initialUserData = userInfo.getUserInfo();
+    userInfo.setInitialUserInfo(initialUserData);
+
     cardSection.renderItems();
   } catch (error) {
     console.error(error);
@@ -159,8 +189,31 @@ async function init() {
   popupSure.setEventListeners();
 }
 
-popupPlace.setSubmitCallback((formValues) => {
-  formSubmitPlaceHandler(formValues);
-});
-
 init();
+
+
+async function deleteCard(cardId) {
+  const cohortId = 'cohort-73';
+  const url = `https://mesto.nomoreparties.co/v1/${cohortId}/cards/${cardId}`;
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      authorization: '2b8cc866-b1cb-4cb1-a139-86e0e04b8844'
+    }
+  });
+
+  if (response.ok) {
+    removeCardFromDOM(cardId);
+  } else {
+    throw new Error('Failed to delete card');
+  }
+}
+
+
+function removeCardFromDOM(cardId) {
+  const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+  if (cardElement) {
+    cardElement.remove();
+  }
+}
