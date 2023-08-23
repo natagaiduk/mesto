@@ -389,10 +389,11 @@ template {
 	justify-content: center;
 	display: flex;
 	transition: visibility .3s, opacity .3s linear;
+	pointer-events: none;
 }
 .popup__close {
 	all: unset;
-	background-image: url(2ceb783afbab75916ddc.svg);
+	background-image: url(039f1f5203f653b4bacd.svg);
 	position: absolute;
 	top: -40px;
 	right: -40px;
@@ -417,6 +418,7 @@ template {
 .popup_opened {
 	visibility: visible;
 	opacity: 1;
+	pointer-events: all;
 }
 
 .popup__container {
@@ -452,6 +454,16 @@ template {
 	max-height: inherit;
 	min-height: max-content;
 	min-width: inherit;
+}
+.popup__container_type_sure {
+	min-height: 181px;
+	min-width: 430px;
+	visibility: visible;
+	opacity: 1;
+}
+
+.popup__save-button_type_sure {
+	margin: 0 35px;
 }
 
 .popup__edit {
@@ -714,7 +726,7 @@ template {
 	min-height: 24px;
 	margin: 38px 0 0 18px;
 	cursor: pointer;
-	background-image: url(a1892ea72cb87c8fc3aa.svg);
+	background-image: url(af236f6cf67005f1d7aa.svg);
 	background-repeat: no-repeat;
 }
 
@@ -861,6 +873,12 @@ template {
 .element__trash:hover {
 	opacity: .5;
 	transition: ease .3s;
+}
+.element__likecounter {
+	color: black;
+	margin: 0 auto;
+	text-align: center;
+	margin: 0 20px 0 0;
 }
 
 .footer {
