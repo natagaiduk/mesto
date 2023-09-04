@@ -6,6 +6,7 @@ import PopupWithImage from './scripts/PopupWithImage.js';
 import PopupWithForm from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
 import PopupSure from './scripts/PopupSure.js';
+import Api from './scripts/Api.js';
 
 const buttonForEdit = document.querySelector('.profile__edit-button');
 const buttonForAdd = document.querySelector('.profile__add-button');
@@ -54,128 +55,37 @@ const cardSection = new Section({
   }
 }, '.element');
 
-async function fetchInitialCards() {
-  const cohortId = 'cohort-73';
-  const url = `https://mesto.nomoreparties.co/v1/${cohortId}/cards`;
-
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      authorization: '2b8cc866-b1cb-4cb1-a139-86e0e04b8844'
-    }
-  });
-
-  if (response.ok) {
-    const cardsData = await response.json();
-    return cardsData;
-  } else {
-    throw new Error('Failed to fetch initial cards');
-  }
-}
-
-async function generateCardElement(cardData, userId) {
-  const card = new Card({
-    name: cardData.name,
-    link: cardData.link,
-    ownerId: cardData.owner._id
-  },
-  cardsTemplateSelector, () => {
-    imageZoomed.open(cardData.link, cardData.name);
-  },
-  (idCard) => {
-    if (userId ===cardData.owner._id) {
-    popupSure.open();
-    popupSure.setSubmitSure(() => {
-      deleteCard(idCard);
-    });
-  }
-    console.log(idCard);
-  }, userId);
-
-  return card.generateCard();
-}
-
-function openPopupEdit() {
-  popupEdit.open();
-  inputName.value = profileName.textContent;
-  inputSubtitle.value = profileSubtitle.textContent;
-}
-
-function closePopupEdit() {
-  popupEdit.close();
-}
-
-async function formSubmitEditHandler(formValues) {
-  const {
-    'name-input': name,
-    'name-subtitle': about
-  } = formValues;
-
-  try {
-    const updatedUserData = await userInfo.updateProfileInfoOnServer(name, about);
-    userInfo.setUserInfo(updatedUserData);
-    closePopupEdit();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function openPopupPlace() {
-  popupPlace.open();
-}
-
-function closePopupPlace() {
-  popupPlace.close();
-}
-
-async function formSubmitPlaceHandler(formValues) {
-  const {
-    'place-edit': name,
-    'place-link': link
-  } = formValues;
-
-  try {
-    const cardData = { name, link };
-    const cardElement = await generateCardElement(cardData); 
-
-    cardSection.addItem(cardElement, 'afterbegin');
-
-    closePopupPlace();
-    formPlace.reset();
-    formValidatorPlace.toggleButtonState();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-
 async function init() {
-
-
   try {
-    const userInfo = new UserInfo({
-      nameSelector: '.profile__name',
-      aboutSelector: '.profile__subtitle'
+    const api = new Api({
+      baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-73',
+      headers: {
+        authorization: '2b8cc866-b1cb-4cb1-a139-86e0e04b8844',
+        'Content-Type': 'application/json',
+      },
     });
-    const userData = await userInfo.fetchUserData();
-    const userId = userData._id; 
 
+    const userData = await api.getUserInfo();
+    const userId = userData._id;
 
-    const cardsData = await fetchInitialCards();
+    const cardsData = await api.getInitialCards();
 
+    const cardPromises = cardsData.map(cardData => generateCardElement(cardData, userId));
+    const cardElements = await Promise.all(cardPromises);
 
-        const cardPromises = cardsData.map(cardData => generateCardElement(cardData, userId));
-
-        const cardElements = await Promise.all(cardPromises);
-
-        cardElements.forEach(cardElement => {
-          cardSection.addItem(cardElement);
+    cardElements.forEach(cardElement => {
+      cardSection.addItem(cardElement);
     });
 
     const initialUserData = userInfo.getUserInfo();
     userInfo.setInitialUserInfo(initialUserData);
 
     cardSection.renderItems();
+
+    popupPlace.setSubmitHandler((formValues) => {
+      formSubmitPlaceHandler(formValues, api);
+    });
+
   } catch (error) {
     console.error(error);
   }
@@ -191,22 +101,80 @@ async function init() {
 
 init();
 
-
-async function deleteCard(cardId) {
-  const cohortId = 'cohort-73';
-  const url = `https://mesto.nomoreparties.co/v1/${cohortId}/cards/${cardId}`;
-
-  const response = await fetch(url, {
-    method: 'DELETE',
-    headers: {
-      authorization: '2b8cc866-b1cb-4cb1-a139-86e0e04b8844'
+function generateCardElement(cardData, userId) {
+  const card = new Card({
+    name: cardData.name,
+    link: cardData.link,
+    ownerId: cardData.owner._id
+  }, cardsTemplateSelector, () => {
+    imageZoomed.open(cardData.link, cardData.name);
+  }, (idCard) => {
+    if (userId === cardData.owner._id) {
+      popupSure.open();
+      popupSure.setSubmitSure(() => {
+        deleteCard(idCard);
+      });
     }
-  });
+  }, userId);
 
-  if (response.ok) {
-    removeCardFromDOM(cardId);
-  } else {
-    throw new Error('Failed to delete card');
+  return card.generateCard();
+}
+
+function openPopupEdit() {
+  popupEdit.open();
+  inputName.value = profileName.textContent;
+  inputSubtitle.value = profileSubtitle.textContent;
+}
+
+function closePopupEdit() {
+  popupEdit.close();
+}
+
+async function formSubmitEditHandler(formValues, api) {
+  const {
+    'name-input': name,
+    'name-subtitle': about
+  } = formValues;
+
+  try {
+    const updatedUserData = await api.updateUserInfo({ name, about });
+    userInfo.setUserInfo(updatedUserData);
+    closePopupEdit();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function openPopupPlace() {
+  popupPlace.open();
+}
+
+function closePopupPlace() {
+  popupPlace.close();
+}
+
+async function formSubmitPlaceHandler(formValues, api) {
+  const {
+    'place-edit': name,
+    'place-link': link
+  } = formValues;
+  console.log(api);
+   try {
+
+    const newCardData = await api.addCard({ name, link });
+
+    const cardElement = generateCardElement(newCardData, newCardData.owner._id);
+
+
+    cardSection.addItem(cardElement, 'afterbegin');
+
+
+    closePopupPlace();
+
+    formPlace.reset();
+    formValidatorPlace.toggleButtonState();
+  } catch (error) {
+    console.error(error);
   }
 }
 
