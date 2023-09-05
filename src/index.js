@@ -28,6 +28,8 @@ const inputTitle = document.querySelector('.popup__field_key_title');
 const inputLink = document.querySelector('.popup__field_key_image');
 const formPlace = document.querySelector('.popup__form_type_place');
 
+let userId = null;
+
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
   aboutSelector: '.profile__subtitle'
@@ -65,24 +67,17 @@ async function init() {
       },
     });
 
-    const userData = await api.getUserInfo();
-    const userId = userData._id;
+    const [cardElements, userData] = await Promise.all([api.getInitialCards(), api.getUserInfo()]);
 
-    const cardsData = await api.getInitialCards();
+    userId = userData._id;
 
-    const cardPromises = cardsData.map(cardData => generateCardElement(cardData, userId));
-    const cardElements = await Promise.all(cardPromises);
-
-    cardElements.forEach(cardElement => {
-      cardSection.addItem(cardElement);
-    });
 
     const initialUserData = userInfo.getUserInfo();
     userInfo.setInitialUserInfo(initialUserData);
 
-    cardSection.renderItems();
+    cardSection.renderItems(cardElements);
 
-    popupPlace.setSubmitHandler((formValues) => {
+    popupPlace.setSubmitCallback((formValues) => {
       formSubmitPlaceHandler(formValues, api);
     });
 
@@ -99,7 +94,10 @@ async function init() {
   popupSure.setEventListeners();
 }
 
-init();
+
+  init();
+
+
 
 function generateCardElement(cardData, userId) {
   const card = new Card({
@@ -117,8 +115,20 @@ function generateCardElement(cardData, userId) {
     }
   }, userId);
 
+
+  card.setDeleteButtonClickHandler(() => {
+    if (currentUserId === cardData.owner._id) {
+      popupSure.open();
+      popupSure.setSubmitSure(() => {
+        deleteCard(cardData._id);
+      });
+    }
+});
+
   return card.generateCard();
 }
+
+
 
 function openPopupEdit() {
   popupEdit.open();
@@ -158,12 +168,13 @@ async function formSubmitPlaceHandler(formValues, api) {
     'place-edit': name,
     'place-link': link
   } = formValues;
+  console.log('before api.addcard')
   console.log(api);
    try {
 
     const newCardData = await api.addCard({ name, link });
 
-    const cardElement = generateCardElement(newCardData, newCardData.owner._id);
+    const cardElement = generateCardElement(newCardData, newCardData.ownerId, userId);
 
 
     cardSection.addItem(cardElement, 'afterbegin');
@@ -174,7 +185,7 @@ async function formSubmitPlaceHandler(formValues, api) {
     formPlace.reset();
     formValidatorPlace.toggleButtonState();
   } catch (error) {
-    console.error(error);
+    console.error('error in placehandler', error);
   }
 }
 

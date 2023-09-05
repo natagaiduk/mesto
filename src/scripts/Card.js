@@ -1,6 +1,3 @@
-//import PopupSure from './PopupSure.js';
-//import PopupSure from './PopupSure.js';
-//import { openPopupSure } from './PopupSure.js';
 
 export class Card {
   constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, ownerId) {
@@ -9,6 +6,10 @@ export class Card {
     this._handleCardClick = handleCardClick;
     this._handleDeleteCard = handleDeleteCard;
     this._ownerId = ownerId;
+  }
+
+  setDeleteButtonClickHandler(deleteHandler) {
+    this._deleteHandler = deleteHandler;
   }
 
   _getTemplate() {
