@@ -36,7 +36,7 @@ class Api {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify(data),
-    }).then(this._handleResponse);
+    }).then((res) => this._handleResponse(res));
   }
 
   deleteCard(cardId) {

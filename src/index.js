@@ -11,6 +11,7 @@ import Api from './scripts/Api.js';
 const buttonForEdit = document.querySelector('.profile__edit-button');
 const buttonForAdd = document.querySelector('.profile__add-button');
 
+
 const popupEdit = new PopupWithForm('.popup_type_name', formSubmitEditHandler);
 const popupPlace = new PopupWithForm('.popup_type_place', formSubmitPlaceHandler);
 const imageZoomed = new PopupWithImage('.popup_type_image');
@@ -115,15 +116,10 @@ function generateCardElement(cardData, userId) {
     }
   }, userId);
 
+const cardElement = card.generateCard();
+const buttonForDelete = cardElement.querySelector('.element__trash');
+console.log(buttonForDelete);
 
-  card.setDeleteButtonClickHandler(() => {
-    if (currentUserId === cardData.owner._id) {
-      popupSure.open();
-      popupSure.setSubmitSure(() => {
-        deleteCard(cardData._id);
-      });
-    }
-});
 
   return card.generateCard();
 }
@@ -168,8 +164,7 @@ async function formSubmitPlaceHandler(formValues, api) {
     'place-edit': name,
     'place-link': link
   } = formValues;
-  console.log('before api.addcard')
-  console.log(api);
+
    try {
 
     const newCardData = await api.addCard({ name, link });
@@ -190,9 +185,17 @@ async function formSubmitPlaceHandler(formValues, api) {
 }
 
 
-function removeCardFromDOM(cardId) {
-  const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-  if (cardElement) {
-    cardElement.remove();
+
+async function removeCardFromDOM(cardId, api) {
+  try {
+    await api.deleteCard(cardId);
+
+
+    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+    if (cardElement) {
+      cardElement.remove();
+    }
+  } catch (error) {
+    console.error('Ошибка при удалении карточки', error);
   }
 }

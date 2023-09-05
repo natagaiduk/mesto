@@ -48,10 +48,11 @@ export class Card {
     this._likeButton = this._element.querySelector('.element__heart');
     this._trashButton = this._element.querySelector('.element__trash');
 
-    this._likeButton.addEventListener('click', this._handleLikeCard.bind(this));
-    this._trashButton.addEventListener('click', this._deleteCard.bind(this));
-    this._cardImage.addEventListener('click', this._handleImageClick.bind(this));
+    this._likeButton.addEventListener('click', () => this._handleLikeCard.bind(this));
+    this._trashButton.addEventListener('click', () => this._deleteCard.bind(this));
+    this._cardImage.addEventListener('click', () => this._handleImageClick.bind(this));
 
     return this._element;
   }
 }
+
