@@ -105,7 +105,7 @@ async function init() {
 
 async function deleteCard(cardId) {
       try {
-        await api.deleteCard(cardId);
+        await api.deleteCard(cardId, api);
 
         const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
         if (cardElement) {
@@ -116,18 +116,7 @@ async function deleteCard(cardId) {
       }
     }
 
-//async function deleteCard(cardId) {
-//  try {
-//    await api.deleteCard(cardId);
 
-//    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-//    if (cardElement) {
-//      cardElement.remove();
-//    }
-//  } catch (error) {
-//    console.error('Ошибка при удалении карточки', error);
-//  }
-//}
 
 
 
@@ -140,15 +129,11 @@ function generateCardElement(cardData, userId) {
   }, cardsTemplateSelector, () => {
     imageZoomed.open(cardData.link, cardData.name);
   }, deleteCard,  () => {
-
-      popupSure.open();
-      popupSure.setSubmitSure(() => {
-        deleteCard(cardData._id);
-      });
+  card._deleteCard();
+      },
     
-  }, 
 
-  userId);
+  userId, popupSure);
 
 const cardElement = card.generateCard();
 const buttonForDelete = cardElement.querySelector('.element__trash');

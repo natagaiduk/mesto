@@ -1,13 +1,13 @@
 
 export class Card {
-  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, ownerId, deleteHandler, openPopupSure) {
+  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, ownerId, deleteHandler, openPopupSure, popupSure) {
     this._cardsData = cardsData;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteCard = handleDeleteCard;
     this._ownerId = ownerId;
     this._deleteHandler = deleteHandler;
-    this._openPopupSure = openPopupSure;
+    this._popupSure = openPopupSure;
   }
 
 
@@ -21,11 +21,15 @@ export class Card {
   }
 
   _deleteCard() {
-  console.log('Здесь будет вызываться попап')
-  
-      this._openPopupSure(this._cardsData.id);
-
-  };
+  console.log('Здесь будет вызываться попап');
+  if (this._popupSure) {
+    this._popupSure.open();
+    this._popupSure.setSubmitSure(() => {
+      // Вызываем вашу функцию deleteCard с передачей cardData._id
+      deleteCard(this._cardsData._id);
+    });
+  }
+}
 
 
   _handleLikeCard() {
