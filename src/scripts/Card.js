@@ -1,16 +1,16 @@
 
 export class Card {
-  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, ownerId) {
+  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, ownerId, deleteHandler, openPopupSure) {
     this._cardsData = cardsData;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteCard = handleDeleteCard;
     this._ownerId = ownerId;
+    this._deleteHandler = deleteHandler;
+    this._openPopupSure = openPopupSure;
   }
 
-  setDeleteButtonClickHandler(deleteHandler) {
-    this._deleteHandler = deleteHandler;
-  }
+
 
   _getTemplate() {
     const cardTemplate = document
@@ -21,8 +21,12 @@ export class Card {
   }
 
   _deleteCard() {
-  this._handleDeleteCard(this._cardsData.id);
-}
+  console.log('Здесь будет вызываться попап')
+  if (typeof this._openPopupSure === 'function') {
+      this._openPopupSure(this._cardsData.id);
+    }
+  };
+
 
   _handleLikeCard() {
     this._likeButton.classList.toggle('element__heart_active');
@@ -48,9 +52,9 @@ export class Card {
     this._likeButton = this._element.querySelector('.element__heart');
     this._trashButton = this._element.querySelector('.element__trash');
 
-    this._likeButton.addEventListener('click', () => this._handleLikeCard.bind(this));
-    this._trashButton.addEventListener('click', () => this._deleteCard.bind(this));
-    this._cardImage.addEventListener('click', () => this._handleImageClick.bind(this));
+    this._likeButton.addEventListener('click', this._handleLikeCard.bind(this));
+    this._trashButton.addEventListener('click', this._deleteCard.bind(this));
+    this._cardImage.addEventListener('click', this._handleImageClick.bind(this));
 
     return this._element;
   }

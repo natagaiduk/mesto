@@ -5,8 +5,9 @@ import { Section } from './scripts/Section.js';
 import PopupWithImage from './scripts/PopupWithImage.js';
 import PopupWithForm from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
-import PopupSure from './scripts/PopupSure.js';
+import PopupSure, {openPopupSure} from './scripts/PopupSure.js';
 import Api from './scripts/Api.js';
+
 
 const buttonForEdit = document.querySelector('.profile__edit-button');
 const buttonForAdd = document.querySelector('.profile__add-button');
@@ -99,6 +100,21 @@ async function init() {
   init();
 
 
+async function deleteCard(cardId) {
+  try {
+    await api.deleteCard(cardId);
+
+    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+    if (cardElement) {
+      cardElement.remove();
+    }
+  } catch (error) {
+    console.error('Ошибка при удалении карточки', error);
+  }
+}
+
+
+
 
 function generateCardElement(cardData, userId) {
   const card = new Card({
@@ -107,18 +123,22 @@ function generateCardElement(cardData, userId) {
     ownerId: cardData.owner._id
   }, cardsTemplateSelector, () => {
     imageZoomed.open(cardData.link, cardData.name);
-  }, (idCard) => {
-    if (userId === cardData.owner._id) {
-      popupSure.open();
-      popupSure.setSubmitSure(() => {
-        deleteCard(idCard);
-      });
-    }
-  }, userId);
+  }, deleteCard, openPopupSure,
+
+  //(idCard) => {
+    //if (userId === cardData.owner._id) {
+      //popupSure.open();
+      //popupSure.setSubmitSure(() => {
+        //deleteCard(idCard);
+      //});
+    //}
+  //}, 
+
+  userId);
 
 const cardElement = card.generateCard();
 const buttonForDelete = cardElement.querySelector('.element__trash');
-console.log(buttonForDelete);
+
 
 
   return card.generateCard();
@@ -186,16 +206,18 @@ async function formSubmitPlaceHandler(formValues, api) {
 
 
 
-async function removeCardFromDOM(cardId, api) {
-  try {
-    await api.deleteCard(cardId);
 
 
-    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-    if (cardElement) {
-      cardElement.remove();
-    }
-  } catch (error) {
-    console.error('Ошибка при удалении карточки', error);
-  }
-}
+//async function removeCardFromDOM(cardId, api) {
+//  try {
+//    await api.deleteCard(cardId);
+
+
+//    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+//    if (cardElement) {
+//      cardElement.remove();
+//    }
+//  } catch (error) {
+//    console.error('Ошибка при удалении карточки', error);
+//  }
+//}
