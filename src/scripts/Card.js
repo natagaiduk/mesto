@@ -22,9 +22,9 @@ export class Card {
 
   _deleteCard() {
   console.log('Здесь будет вызываться попап')
-  if (typeof this._openPopupSure === 'function') {
+  
       this._openPopupSure(this._cardsData.id);
-    }
+
   };
 
 

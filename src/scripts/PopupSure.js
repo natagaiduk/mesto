@@ -19,7 +19,6 @@ export default class PopupSure extends Popup {
 
   setEventListeners() {
     super.setEventListeners();
-    console.log(this._submitButton);
     this._submitButton.addEventListener('click', () => {
       this.closeAndSubmit();
           console.log('Клик "да" сработал');

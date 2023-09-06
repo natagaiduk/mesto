@@ -83,6 +83,8 @@ async function init() {
       formSubmitPlaceHandler(formValues, api);
     });
 
+
+
   } catch (error) {
     console.error(error);
   }
@@ -100,18 +102,32 @@ async function init() {
   init();
 
 
-async function deleteCard(cardId) {
-  try {
-    await api.deleteCard(cardId);
 
-    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-    if (cardElement) {
-      cardElement.remove();
+async function deleteCard(cardId) {
+      try {
+        await api.deleteCard(cardId);
+
+        const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+        if (cardElement) {
+          cardElement.remove();
+        }
+      } catch (error) {
+        console.error('Ошибка при удалении карточки', error);
+      }
     }
-  } catch (error) {
-    console.error('Ошибка при удалении карточки', error);
-  }
-}
+
+//async function deleteCard(cardId) {
+//  try {
+//    await api.deleteCard(cardId);
+
+//    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+//    if (cardElement) {
+//      cardElement.remove();
+//    }
+//  } catch (error) {
+//    console.error('Ошибка при удалении карточки', error);
+//  }
+//}
 
 
 
@@ -123,16 +139,14 @@ function generateCardElement(cardData, userId) {
     ownerId: cardData.owner._id
   }, cardsTemplateSelector, () => {
     imageZoomed.open(cardData.link, cardData.name);
-  }, deleteCard, openPopupSure,
+  }, deleteCard,  () => {
 
-  //(idCard) => {
-    //if (userId === cardData.owner._id) {
-      //popupSure.open();
-      //popupSure.setSubmitSure(() => {
-        //deleteCard(idCard);
-      //});
-    //}
-  //}, 
+      popupSure.open();
+      popupSure.setSubmitSure(() => {
+        deleteCard(cardData._id);
+      });
+    
+  }, 
 
   userId);
 
