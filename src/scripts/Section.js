@@ -11,7 +11,16 @@ export class Section {
     });
   }
 
-  addItem(element) {
+  addItem(element, position = 'append') {
+    switch(position) {
+    case 'append':
     this._container.append(element);
+    return;
+  case 'prepend':
+    this._container.prepend(element);
+    return;
+  default:
+    break;
+    }
   }
 }

@@ -1,13 +1,12 @@
 
 export class Card {
-  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, ownerId, deleteHandler, openPopupSure, popupSure) {
+  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, userId) {
     this._cardsData = cardsData;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteCard = handleDeleteCard;
-    this._ownerId = ownerId;
-    this._deleteHandler = deleteHandler;
-    this._popupSure = openPopupSure;
+    this._ownerId = cardsData.owner._id;
+    this._userId = userId;
   }
 
 
@@ -20,15 +19,17 @@ export class Card {
     return cardTemplate;
   }
 
-  _deleteCard() {
-  console.log('Здесь будет вызываться попап');
-  if (this._popupSure) {
-    this._popupSure.open();
-    this._popupSure.setSubmitSure(() => {
-      // Вызываем вашу функцию deleteCard с передачей cardData._id
-      deleteCard(this._cardsData._id);
-    });
-  }
+  deleteCard() {
+    this._element.remove();
+    this._element.null;
+
+//  console.log('Здесь будет вызываться попап');
+//  if (this._popupSure) {
+//    this._popupSure.open();
+//    this._popupSure.setSubmitSure(() => {
+//      deleteCard(this._cardsData._id);
+//    });
+//  }
 }
 
 
@@ -46,18 +47,29 @@ export class Card {
     this._handleCardClick(this._cardsData);
   }
 
+  getId() {
+    return this._cardsData._id;
+  }
+
   generateCard() {
     this._element = this._getTemplate();
     this._cardImage = this._element.querySelector('.element__image');
     this._element.querySelector('.element__title-text').textContent = this._cardsData.name;
-    this._element.querySelector('.element__image').src = this._cardsData.link;
-    this._element.querySelector('.element__image').alt = this._cardsData.name;
+    this._imageElement = this._element.querySelector('.element__image');
+    this._imageElement.src = this._cardsData.link;
+    this._imageElement.alt = this._cardsData.name;
+
+
 
     this._likeButton = this._element.querySelector('.element__heart');
     this._trashButton = this._element.querySelector('.element__trash');
 
+    if(this._ownerId !== this._userId) {
+      this._trashButton.remove();
+    }
+
     this._likeButton.addEventListener('click', this._handleLikeCard.bind(this));
-    this._trashButton.addEventListener('click', this._deleteCard.bind(this));
+    this._trashButton.addEventListener('click', () => this._handleDeleteCard(this));
     this._cardImage.addEventListener('click', this._handleImageClick.bind(this));
 
     return this._element;

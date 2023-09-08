@@ -54,13 +54,12 @@ formValidatorPlace.enableValidation();
 
 const cardSection = new Section({
   renderer: (cardData) => {
-    const cardElement = generateCardElement(cardData);
-    cardSection.addItem(cardElement);
+    const cardElement = generateCardElement(cardData, userId);
+    cardSection.addItem(cardElement, 'append');
   }
 }, '.element');
 
-async function init() {
-  try {
+
     const api = new Api({
       baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-73',
       headers: {
@@ -68,6 +67,10 @@ async function init() {
         'Content-Type': 'application/json',
       },
     });
+
+
+async function init() {
+  try {
 
     const [cardElements, userData] = await Promise.all([api.getInitialCards(), api.getUserInfo()]);
 
@@ -80,7 +83,7 @@ async function init() {
     cardSection.renderItems(cardElements);
 
     popupPlace.setSubmitCallback((formValues) => {
-      formSubmitPlaceHandler(formValues, api);
+      formSubmitPlaceHandler(formValues);
     });
 
 
@@ -103,37 +106,31 @@ async function init() {
 
 
 
-async function deleteCard(cardId) {
+async function deleteCard(cardInstance) {
       try {
-        await api.deleteCard(cardId, api);
-
-        const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-        if (cardElement) {
-          cardElement.remove();
-        }
+        popupSure.open();
+        popupSure.setSubmitSure(() => {
+          api.deleteCard(cardInstance.getId()).then(res => {
+            cardInstance.deleteCard();
+          })
+        })
       } catch (error) {
         console.error('Ошибка при удалении карточки', error);
       }
     }
 
 
-
-
-
-
 function generateCardElement(cardData, userId) {
-  const card = new Card({
-    name: cardData.name,
-    link: cardData.link,
-    ownerId: cardData.owner._id
-  }, cardsTemplateSelector, () => {
+  const card = new Card(
+    cardData, 
+    cardsTemplateSelector, 
+    () => {
     imageZoomed.open(cardData.link, cardData.name);
-  }, deleteCard,  () => {
-  card._deleteCard();
-      },
-    
+  }, 
+  deleteCard, 
 
-  userId, popupSure);
+  userId, 
+  popupSure);
 
 const cardElement = card.generateCard();
 const buttonForDelete = cardElement.querySelector('.element__trash');
@@ -155,7 +152,7 @@ function closePopupEdit() {
   popupEdit.close();
 }
 
-async function formSubmitEditHandler(formValues, api) {
+async function formSubmitEditHandler(formValues) {
   const {
     'name-input': name,
     'name-subtitle': about
@@ -178,7 +175,7 @@ function closePopupPlace() {
   popupPlace.close();
 }
 
-async function formSubmitPlaceHandler(formValues, api) {
+async function formSubmitPlaceHandler(formValues) {
   const {
     'place-edit': name,
     'place-link': link
@@ -188,10 +185,10 @@ async function formSubmitPlaceHandler(formValues, api) {
 
     const newCardData = await api.addCard({ name, link });
 
-    const cardElement = generateCardElement(newCardData, newCardData.ownerId, userId);
+    const cardElement = generateCardElement(newCardData, userId);
 
 
-    cardSection.addItem(cardElement, 'afterbegin');
+    cardSection.addItem(cardElement, 'prepend');
 
 
     closePopupPlace();
