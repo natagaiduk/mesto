@@ -8,3 +8,7 @@
 .popup__save-button_type_sure {
 	margin: 0 35px;
 }
+
+.popup__container_type_avatar {
+	min-height: 272px;
+}

@@ -7,6 +7,7 @@ import PopupWithForm from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
 import PopupSure, {openPopupSure} from './scripts/PopupSure.js';
 import Api from './scripts/Api.js';
+import PopupEditAvatar from './scripts/PopupEditAvatar.js';
 
 
 const buttonForEdit = document.querySelector('.profile__edit-button');
@@ -74,8 +75,9 @@ async function init() {
 
     const [cardElements, userData] = await Promise.all([api.getInitialCards(), api.getUserInfo()]);
 
+    userInfo.setUserInfo({ name: userData.name, about: userData.about});
     userId = userData._id;
-
+console.log(userData)
 
     const initialUserData = userInfo.getUserInfo();
     userInfo.setInitialUserInfo(initialUserData);
@@ -118,6 +120,28 @@ async function deleteCard(cardInstance) {
         console.error('Ошибка при удалении карточки', error);
       }
     }
+
+
+
+    function editAvatar() {
+
+    const editAvatarPopup = new PopupEditAvatar('.popup_type_avatar', (avatarUrl) => {
+
+    editAvatarPopup.setAvatarUrl(avatarUrl);
+
+    editAvatarPopup.close();
+});
+
+
+const editAvatarButton = document.querySelector('.profile__edit-avatar');
+editAvatarButton.addEventListener('click', () => {
+  editAvatarPopup.open();
+});
+
+
+}
+
+    editAvatar();
 
 
 function generateCardElement(cardData, userId) {

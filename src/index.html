@@ -19,6 +19,7 @@
       <main class="main">
         <section class="profile">
           <div class="profile__info">
+            <img class="profile__edit-avatar" src="<%=require('./images/Edit-avatar.svg')%>">
             <img class="profile__avatar" src="<%=require('./images/face-kusto.jpg')%>" alt="Жак Ив Кусто">
             <div class="profile__title">
             <div class="profile__edit">
@@ -110,6 +111,33 @@
               type="submit"
               class="popup__save-button popup__save-button_type_place popup__save-button-invalid">
                 Создать
+              </button>
+            </form>
+          </div>
+        </section>
+
+
+        <section class="popup popup_type_avatar">
+          <div class="popup__container popup__container_type_avatar">
+            <button class="popup__close popup__close_type_avatar" type="button">
+            </button>
+            <h2 class="popup__edit">
+              Обновить аватар
+            </h2>
+            <form novalidate class="popup__form popup__form_type_avatar" name="submit-avatar">
+              
+              <input
+                type="url"
+                required
+                class="popup__field popup__field_key_image"
+                name="avatar-link"
+                placeholder="Ссылка на картинку"
+                >
+              <p class="popup__message-invalid place-link-invalid"></p>
+              <button
+              type="submit"
+              class="popup__save-button popup__save-button_type_avatar popup__save-button-invalid">
+                Сохранить
               </button>
             </form>
           </div>
