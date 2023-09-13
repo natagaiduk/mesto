@@ -31,6 +31,19 @@ class Api {
     }).then(this._handleResponse);
   }
 
+  updateAvatar(avatarUrl) {
+  return fetch(`${this._baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: {
+      authorization: this._headers.authorization,
+      'Content-Type': this._headers['Content-Type'],
+    },
+    body: JSON.stringify({ avatar: avatarUrl }),
+  })
+    .then(this._checkResponse);
+}
+
+
   addCard(data) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',

@@ -123,25 +123,29 @@ async function deleteCard(cardInstance) {
 
 
 
-    function editAvatar() {
+const editAvatarPopup = new PopupEditAvatar('.popup_type_avatar', (avatarUrl) => {
 
-    const editAvatarPopup = new PopupEditAvatar('.popup_type_avatar', (avatarUrl) => {
+  api.updateAvatar(avatarUrl)
+    .then((userData) => {
 
-    editAvatarPopup.setAvatarUrl(avatarUrl);
+      editAvatarPopup.setAvatarUrl(userData.avatar);
 
-    editAvatarPopup.close();
+      editAvatarPopup.close();
+    })
+    .catch((error) => {
+      console.error('Ошибка при обновлении аватара:', error);
+    });
 });
-
 
 const editAvatarButton = document.querySelector('.profile__edit-avatar');
-editAvatarButton.addEventListener('click', () => {
-  editAvatarPopup.open();
-});
+
+  editAvatarButton.addEventListener('click', () => {
+    editAvatarPopup.open();
+  });
 
 
-}
 
-    editAvatar();
+
 
 
 function generateCardElement(cardData, userId) {
