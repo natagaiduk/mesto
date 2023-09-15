@@ -40,7 +40,7 @@ class Api {
     },
     body: JSON.stringify({ avatar: avatarUrl }),
   })
-    .then(this._checkResponse);
+    .then(this._handleResponse);
 }
 
 

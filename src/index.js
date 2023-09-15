@@ -35,7 +35,8 @@ let userId = null;
 
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
-  aboutSelector: '.profile__subtitle'
+  aboutSelector: '.profile__subtitle', 
+  avatarSelector: '.profile__avatar'
 });
 
 const formValidatorConfig = {
@@ -76,6 +77,7 @@ async function init() {
     const [cardElements, userData] = await Promise.all([api.getInitialCards(), api.getUserInfo()]);
 
     userInfo.setUserInfo({ name: userData.name, about: userData.about});
+    userInfo.setUserAvatar({avatar: userData.avatar});
     userId = userData._id;
 console.log(userData)
 
@@ -123,19 +125,25 @@ async function deleteCard(cardInstance) {
 
 
 
-const editAvatarPopup = new PopupEditAvatar('.popup_type_avatar', (avatarUrl) => {
 
-  api.updateAvatar(avatarUrl)
-    .then((userData) => {
+async function formSubmitAvatarHandler(formValues) {
+  const {
+    'avatar-link': avatar
+  } = formValues;
 
-      editAvatarPopup.setAvatarUrl(userData.avatar);
+  try {
+    const userData = await api.updateAvatar(avatar);
+    userInfo.setUserAvatar({avatar: userData.avatar});
+    editAvatarPopup.close();
+  } catch (error) {
+    console.error('Ошибка при обновлении аватара: ', error);
+  }
+}
 
-      editAvatarPopup.close();
-    })
-    .catch((error) => {
-      console.error('Ошибка при обновлении аватара:', error);
-    });
-});
+
+
+const editAvatarPopup = new PopupWithForm('.popup_type_avatar', formSubmitAvatarHandler);
+editAvatarPopup.setEventListeners();
 
 const editAvatarButton = document.querySelector('.profile__edit-avatar');
 
