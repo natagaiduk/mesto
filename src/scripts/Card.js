@@ -1,13 +1,14 @@
 
 export class Card {
-  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, userId) {
+  constructor(cardsData, templateSelector, handleCardClick, handleDeleteCard, userId, likeCardFunction, unlikeCardFunction) {
     this._cardsData = cardsData;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteCard = handleDeleteCard;
     this._ownerId = cardsData.owner._id;
     this._userId = userId;
-
+    this._likeCardFunction = likeCardFunction;
+    this._unlikeCardFunction = unlikeCardFunction;
   }
 
 
@@ -37,35 +38,15 @@ export class Card {
         this.isLiked() ? this.likeCard() : this.unlikeCard();
     }
 
-  setLike(data) {
-        this._likes = likes;
-        this._likesCount.textContent = likes.length;
+  setLike(likes) {
+    const likesCount = this._element.querySelector('.element__likecounter');
+        this._cardsData.likes = likes;
+        console.log([likes].length);
+        this._likesCount.textContent = [likes].length;
         this._likeButton.classList.add('element__heart_active')
     }
 
 
-
-
-
-  likeCard() {
-  this._api.likeCard(this._cardsData._id)
-    .then((data) => {
-      this.setLike(data.likes);
-    })
-    .catch((error) => {
-      console.error('Ошибка лайка: ', error);
-    });
-}
-
-  unlikeCard() {
-  this._api.unlikeCard(this._cardsData._id)
-    .then((data) => {
-      this.setLike(data.likes);
-    })
-    .catch((error) => {
-      console.error('Ошибка отмены лайка: ', error);
-    });
-}
 
 
 
@@ -100,8 +81,8 @@ export class Card {
       this._trashButton.remove();
     }
 
-this._likeButton.addEventListener('click', () => {
-  this.likeCard();
+  this._likeButton.addEventListener('click', () => {
+  this._likeCardFunction();
 });
 
 //    this._likeButton.addEventListener('click', this.likeCard.bind(this));

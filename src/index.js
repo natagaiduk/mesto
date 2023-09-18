@@ -165,37 +165,46 @@ function generateCardElement(cardData, userId) {
     imageZoomed.open(cardData.link, cardData.name);
   }, 
   deleteCard, 
-
   userId,
-  api,
+  likeCardFunction,
+  unlikeCardFunction,
   popupSure);
 
   const cardElement = card.generateCard();
   const buttonForDelete = cardElement.querySelector('.element__trash');
 
-  likeCard: () => {
-  if (card.isLiked()) {
-    api.unlikeCard(card.getId())
-    .then((data) => {
-      card.setLike(data.likes);
-    })
-    .catch((error) => {
-      console.log('Ошибка лайка: ', error);
-    })
-  } else {
-    api.setLike(card.getId())
-    .then((data) => {
-       card.setLike(data.likes);
-     })
-     .catch((err) => {
-       console.log(error);
-     })
-   }
-};
-
 
   return card.generateCard();
 }
+
+
+function likeCardFunction() {
+  if (this._cardsData.likes.some((like) => like._id === this._userId)) {
+
+    this._unlikeCardFunction();
+  } else {
+
+    api.likeCard(this._cardsData._id)
+      .then((data) => {
+        this.setLike(data); 
+      })
+      .catch((error) => {
+        console.error('Ошибка лайка: ', error);
+      });
+  }
+};
+
+
+function unlikeCardFunction() {
+  api.unlikeCard(this._cardsData._id)
+    .then((data) => {
+      this.setLike(data); 
+    })
+    .catch((error) => {
+      console.error('Ошибка отмены лайка: ', error);
+    });
+};
+
 
 
 
