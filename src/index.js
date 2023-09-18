@@ -80,7 +80,7 @@ async function init() {
     userInfo.setUserInfo({ name: userData.name, about: userData.about});
     userInfo.setUserAvatar({avatar: userData.avatar});
     userId = userData._id;
-console.log(userData)
+
 
     const initialUserData = userInfo.getUserInfo();
     userInfo.setInitialUserInfo(initialUserData);
@@ -166,34 +166,33 @@ function generateCardElement(cardData, userId) {
   }, 
   deleteCard, 
 
-  userId, 
+  userId,
+  api,
   popupSure);
 
   const cardElement = card.generateCard();
   const buttonForDelete = cardElement.querySelector('.element__trash');
 
-  handleLikeCard: () => {
-    if (card.isLiked()) {
-      api.unlikeCard(card._id)
-      .then((data) => {
-        card.unlikeCard();
-        card.setLike(data.likes);
-      })
-      .catch((error) => {
+  likeCard: () => {
+  if (card.isLiked()) {
+    api.unlikeCard(card.getId())
+    .then((data) => {
+      card.setLike(data.likes);
+    })
+    .catch((error) => {
       console.log('Ошибка лайка: ', error);
     })
-
   } else {
-    api.setLike(card._id)
+    api.setLike(card.getId())
     .then((data) => {
-       card.likeCard();
        card.setLike(data.likes);
      })
      .catch((err) => {
        console.log(error);
      })
    }
-  };
+};
+
 
   return card.generateCard();
 }

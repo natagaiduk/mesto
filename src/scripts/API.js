@@ -73,6 +73,8 @@ class Api {
     }).then(this._handleResponse);
   }
 
+
+
 async fetchUserData() {
     try {
       const userData = await this.getUserInfo();

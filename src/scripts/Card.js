@@ -7,6 +7,7 @@ export class Card {
     this._handleDeleteCard = handleDeleteCard;
     this._ownerId = cardsData.owner._id;
     this._userId = userId;
+
   }
 
 
@@ -37,22 +38,34 @@ export class Card {
     }
 
   setLike(data) {
-        this._likes = data;
-        this._likesCount.textContent = this._likes.length;
+        this._likes = likes;
+        this._likesCount.textContent = likes.length;
+        this._likeButton.classList.add('element__heart_active')
     }
 
 
 
 
 
-  likeCard = () => {
-    this._likeButton.classList.add('element__heart_active');
-  }
+  likeCard() {
+  this._api.likeCard(this._cardsData._id)
+    .then((data) => {
+      this.setLike(data.likes);
+    })
+    .catch((error) => {
+      console.error('Ошибка лайка: ', error);
+    });
+}
 
-  unlikeCard = () => {
-    
-    this._likeButton.classList.remove('element__heart_active');
-  }
+  unlikeCard() {
+  this._api.unlikeCard(this._cardsData._id)
+    .then((data) => {
+      this.setLike(data.likes);
+    })
+    .catch((error) => {
+      console.error('Ошибка отмены лайка: ', error);
+    });
+}
 
 
 
@@ -87,8 +100,12 @@ export class Card {
       this._trashButton.remove();
     }
 
-    this._likeButton.addEventListener('click', this.likeCard.bind(this));
-    this._likeButton.addEventListener('click', this.unlikeCard.bind(this));
+this._likeButton.addEventListener('click', () => {
+  this.likeCard();
+});
+
+//    this._likeButton.addEventListener('click', this.likeCard.bind(this));
+//    this._likeButton.addEventListener('click', this.unlikeCard.bind(this));
     this._trashButton.addEventListener('click', () => this._handleDeleteCard(this));
     this._cardImage.addEventListener('click', this._handleImageClick.bind(this));
 
