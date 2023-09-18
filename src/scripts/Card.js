@@ -22,20 +22,39 @@ export class Card {
   deleteCard() {
     this._element.remove();
     this._element.null;
-
-//  console.log('Здесь будет вызываться попап');
-//  if (this._popupSure) {
-//    this._popupSure.open();
-//    this._popupSure.setSubmitSure(() => {
-//      deleteCard(this._cardsData._id);
-//    });
-//  }
 }
 
 
-  _handleLikeCard() {
-    this._likeButton.classList.toggle('element__heart_active');
+
+  isLiked() {
+        return this._likes.find(user => user._id === this._userId);
+    };
+
+
+
+  _checkOwnLike() {
+        this.isLiked() ? this.likeCard() : this.unlikeCard();
+    }
+
+  setLike(data) {
+        this._likes = data;
+        this._likesCount.textContent = this._likes.length;
+    }
+
+
+
+
+
+  likeCard = () => {
+    this._likeButton.classList.add('element__heart_active');
   }
+
+  unlikeCard = () => {
+    
+    this._likeButton.classList.remove('element__heart_active');
+  }
+
+
 
   _handleImageClick() {
     if (typeof this._handleCardClick === 'function') {
@@ -68,7 +87,8 @@ export class Card {
       this._trashButton.remove();
     }
 
-    this._likeButton.addEventListener('click', this._handleLikeCard.bind(this));
+    this._likeButton.addEventListener('click', this.likeCard.bind(this));
+    this._likeButton.addEventListener('click', this.unlikeCard.bind(this));
     this._trashButton.addEventListener('click', () => this._handleDeleteCard(this));
     this._cardImage.addEventListener('click', this._handleImageClick.bind(this));
 

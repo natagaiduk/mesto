@@ -7,7 +7,7 @@ import PopupWithForm from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
 import PopupSure, {openPopupSure} from './scripts/PopupSure.js';
 import Api from './scripts/Api.js';
-import PopupEditAvatar from './scripts/PopupEditAvatar.js';
+
 
 
 const buttonForEdit = document.querySelector('.profile__edit-button');
@@ -30,6 +30,7 @@ const formProfileName = document.querySelector('.popup__form_type_name');
 const inputTitle = document.querySelector('.popup__field_key_title');
 const inputLink = document.querySelector('.popup__field_key_image');
 const formPlace = document.querySelector('.popup__form_type_place');
+
 
 let userId = null;
 
@@ -168,13 +169,35 @@ function generateCardElement(cardData, userId) {
   userId, 
   popupSure);
 
-const cardElement = card.generateCard();
-const buttonForDelete = cardElement.querySelector('.element__trash');
+  const cardElement = card.generateCard();
+  const buttonForDelete = cardElement.querySelector('.element__trash');
 
+  handleLikeCard: () => {
+    if (card.isLiked()) {
+      api.unlikeCard(card._id)
+      .then((data) => {
+        card.unlikeCard();
+        card.setLike(data.likes);
+      })
+      .catch((error) => {
+      console.log('Ошибка лайка: ', error);
+    })
 
+  } else {
+    api.setLike(card._id)
+    .then((data) => {
+       card.likeCard();
+       card.setLike(data.likes);
+     })
+     .catch((err) => {
+       console.log(error);
+     })
+   }
+  };
 
   return card.generateCard();
 }
+
 
 
 
