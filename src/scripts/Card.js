@@ -9,6 +9,7 @@ export class Card {
     this._userId = userId;
     this._likeCardFunction = likeCardFunction;
     this._unlikeCardFunction = unlikeCardFunction;
+    this._likes = Array.isArray(cardsData.likes) ? cardsData.likes : [];
   }
 
 
@@ -29,21 +30,37 @@ export class Card {
 
 
   isLiked() {
-        return this._likes.find(user => user._id === this._userId);
+    return this._likes.some((like) => like._id === this._userId);
     };
 
 
+async toggleLike(cardsData) {
+    try {
+
+      if (this.isLiked()) {
+        await this._unlikeCardFunction(this._cardsData._id);
+      } else {
+        const updatedLikeData = await this._likeCardFunction(this._cardsData._id);
+        this._likes = updatedLikeData.likes;
+              }
+    } catch (error) {
+      console.error('Ошибка при лайке/дизлайке карточки:', error);
+    }
+  }
+
 
   _checkOwnLike() {
-        this.isLiked() ? this.likeCard() : this.unlikeCard();
+        this.isLiked() ? this._likeCardFunction() : this._unlikeCardFunction();
     }
 
   setLike(likes) {
-    const likesCount = this._element.querySelector('.element__likecounter');
-        this._cardsData.likes = likes;
-        console.log([likes].length);
-        this._likesCount.textContent = [likes].length;
+    let likesCount = this._element.querySelector('.element__likecounter');
+        this._likes = likes;
+
+        likesCount.textContent = [likes].length;
         this._likeButton.classList.add('element__heart_active')
+
+
     }
 
 
@@ -76,13 +93,22 @@ export class Card {
 
     this._likeButton = this._element.querySelector('.element__heart');
     this._trashButton = this._element.querySelector('.element__trash');
+    const likesCount = this._element.querySelector('.element__likecounter');
+    if (this.isLiked()) {
+      this._likeButton.classList.add('element__heart_active');
+    }
+
+    likesCount.textContent = this._cardsData.likes.length;
+
 
     if(this._ownerId !== this._userId) {
       this._trashButton.remove();
     }
 
   this._likeButton.addEventListener('click', () => {
-  this._likeCardFunction();
+  this.toggleLike();
+
+
 });
 
 //    this._likeButton.addEventListener('click', this.likeCard.bind(this));

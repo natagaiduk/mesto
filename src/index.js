@@ -64,9 +64,9 @@ const cardSection = new Section({
 
 
     const api = new Api({
-      baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-73',
+      baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-76',
       headers: {
-        authorization: '2b8cc866-b1cb-4cb1-a139-86e0e04b8844',
+        authorization: 'd993e28f-2ce3-484f-9e94-d5a6e7c68db6',
         'Content-Type': 'application/json',
       },
     });
@@ -208,7 +208,6 @@ function unlikeCardFunction() {
 
 
 
-
 function openPopupEdit() {
   popupEdit.open();
   inputName.value = profileName.textContent;
@@ -267,20 +266,3 @@ async function formSubmitPlaceHandler(formValues) {
   }
 }
 
-
-
-
-
-//async function removeCardFromDOM(cardId, api) {
-//  try {
-//    await api.deleteCard(cardId);
-
-
-//    const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-//    if (cardElement) {
-//      cardElement.remove();
-//    }
-//  } catch (error) {
-//    console.error('Ошибка при удалении карточки', error);
-//  }
-//}
