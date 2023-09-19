@@ -34,20 +34,21 @@ export class Card {
     };
 
 
-async toggleLike(cardsData) {
+
+  async toggleLike(cardsData) {
     try {
 
       if (this.isLiked()) {
         await this._unlikeCardFunction(this._cardsData._id);
       } else {
-        const updatedLikeData = await this._likeCardFunction(this._cardsData._id);
-        this._likes = updatedLikeData.likes;
-              }
+        await this._likeCardFunction(this._cardsData._id);
+      }
     } catch (error) {
       console.error('Ошибка при лайке/дизлайке карточки:', error);
     }
   }
 
+  
 
   _checkOwnLike() {
         this.isLiked() ? this._likeCardFunction() : this._unlikeCardFunction();
@@ -55,13 +56,11 @@ async toggleLike(cardsData) {
 
   setLike(likes) {
     let likesCount = this._element.querySelector('.element__likecounter');
-        this._likes = likes;
+    this._likes = likes.likes;
 
-        likesCount.textContent = [likes].length;
-        this._likeButton.classList.add('element__heart_active')
-
-
-    }
+    likesCount.textContent = likes.likes.length;
+    this._likeButton.classList.toggle('element__heart_active')
+  }
 
 
 

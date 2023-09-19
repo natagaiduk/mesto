@@ -179,19 +179,13 @@ function generateCardElement(cardData, userId) {
 
 
 function likeCardFunction() {
-  if (this._cardsData.likes.some((like) => like._id === this._userId)) {
-
-    this._unlikeCardFunction();
-  } else {
-
-    api.likeCard(this._cardsData._id)
-      .then((data) => {
-        this.setLike(data); 
-      })
-      .catch((error) => {
-        console.error('Ошибка лайка: ', error);
-      });
-  }
+  api.likeCard(this._cardsData._id)
+    .then((data) => {
+      this.setLike(data);
+    })
+    .catch((error) => {
+      console.error('Ошибка лайка: ', error);
+    });
 };
 
 
@@ -249,6 +243,7 @@ async function formSubmitPlaceHandler(formValues) {
 
    try {
 
+
     const newCardData = await api.addCard({ name, link });
 
     const cardElement = generateCardElement(newCardData, userId);
@@ -266,3 +261,30 @@ async function formSubmitPlaceHandler(formValues) {
   }
 }
 
+
+popupEdit.setSubmitCallback((formValues) => {
+  const saveButton = document.querySelector('.popup_type_name .popup__save-button');
+  saveButton.textContent = 'Сохранение...';
+  formSubmitEditHandler(formValues)
+    .finally(() => {
+      saveButton.textContent = 'Сохранить';
+    });
+});
+
+popupPlace.setSubmitCallback((formValues) => {
+  const saveButton = document.querySelector('.popup_type_place .popup__save-button');
+  saveButton.textContent = 'Создание...';
+  formSubmitPlaceHandler(formValues)
+    .finally(() => {
+      saveButton.textContent = 'Создать';
+    });
+});
+
+editAvatarPopup.setSubmitCallback((formValues) => {
+  const saveButton = document.querySelector('.popup_type_avatar .popup__save-button');
+  saveButton.textContent = 'Сохранение...';
+  formSubmitAvatarHandler(formValues)
+    .finally(() => {
+      saveButton.textContent = 'Сохранить';
+    });
+});
