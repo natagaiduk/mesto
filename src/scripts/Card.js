@@ -110,8 +110,6 @@ export class Card {
 
 });
 
-//    this._likeButton.addEventListener('click', this.likeCard.bind(this));
-//    this._likeButton.addEventListener('click', this.unlikeCard.bind(this));
     this._trashButton.addEventListener('click', () => this._handleDeleteCard(this));
     this._cardImage.addEventListener('click', this._handleImageClick.bind(this));
 
