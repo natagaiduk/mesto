@@ -133,7 +133,7 @@
                 name="avatar-link"
                 placeholder="Ссылка на картинку"
                 >
-              <p class="popup__message-invalid place-link-invalid"></p>
+              <p class="popup__message-invalid avatar-link-invalid"></p>
               <button
               type="submit"
               class="popup__save-button popup__save-button_type_avatar popup__save-button-invalid">
@@ -160,11 +160,13 @@
             <p class="popup__edit">
               Вы уверены?
             </p>
-            <button
-              type="submit"
-              class="popup__save-button popup__save-button_type_sure">
-                Да
+            <form class="popup__form popup__form_type_sure" id="confirm-delete" name="confirm-delete">
+              <button
+                type="submit"
+                class="popup__save-button popup__save-button_type_sure">
+                  Да
               </button>
+            </form>
           </div>
         </section>
 
