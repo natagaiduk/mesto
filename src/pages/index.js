@@ -118,6 +118,7 @@ function deleteCard(cardInstance) {
         popupSure.setSubmitSure(() => {
             api.deleteCard(cardInstance.getId()).then(res => {
                 cardInstance.deleteCard();
+                popupSure.close()
             })
             .catch(error => {
               console.error('Ошибка при удалении карточки: ', error);
@@ -141,7 +142,9 @@ async function formSubmitAvatarHandler(formValues) {
         const userData = await api.updateAvatar(avatar);
         userInfo.setUserAvatar({ avatar: userData.avatar });
         editAvatarPopup.close();
-        document.querySelector('.popup_type_avatar .popup__save-button').setAttribute('disabled', 'disabled');
+        formValidatorAvatar.toggleButtonState();
+        
+
     } catch (error) {
         console.error('Ошибка при обновлении аватара: ', error);
     }
@@ -156,6 +159,8 @@ const editAvatarButton = document.querySelector('.profile__edit-avatar');
 
 editAvatarButton.addEventListener('click', () => {
     editAvatarPopup.open();
+    
+
 });
 
 
@@ -229,7 +234,10 @@ async function formSubmitEditHandler(formValues) {
     try {
         const updatedUserData = await api.updateUserInfo({ name, about });
         userInfo.setUserInfo(updatedUserData);
+
         closePopupEdit();
+        
+        formValidatorName.toggleButtonState();
     } catch (error) {
         console.error('Ошибка при обновлении юзеринфо: ', error);
     }
