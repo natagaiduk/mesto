@@ -258,6 +258,9 @@ async function formSubmitPlaceHandler(formValues) {
         'place-link': link
     } = formValues;
 
+    const saveButton = document.querySelector('.popup_type_place .popup__save-button');
+    renderLoading(saveButton, true);
+
     try {
 
         const newCardData = await api.addCard({ name, link });
@@ -270,6 +273,8 @@ async function formSubmitPlaceHandler(formValues) {
         formValidatorPlace.toggleButtonState();
     } catch (error) {
         console.error('Ошибка при добавлении карточки: ', error);
+    } finally {
+        renderLoading(saveButton, false);
     }
 }
 
