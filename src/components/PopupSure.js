@@ -16,7 +16,7 @@ export default class PopupSure extends Popup {
         if (this._submitSure) {
             try {
                 await this._submitSure();
-                this.close();
+                
             } catch (error) {
                 console.error('Ошибка при выполнении операции: ', error);
             }
